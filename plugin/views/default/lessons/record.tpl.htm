@@ -1,0 +1,49 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="aw-content-wrap clearfix">
+                <div class="col-sm-12 col-md-9 aw-main-content">
+                    <div class="aw-mod aw-mod-invite-friend">
+                        <div class="mod-head common-head">
+                            <h2>
+                                <?php _e('功课填报'); ?>
+                                <a href="/lessons/" class="pull-right btn btn-mini btn-success">我的功课</a>
+                            </h2>
+                        </div>
+                        <div class="mod-body">
+                            <form id="lessons_add_form" method="post" action="lessons/ajax/add_lessons/" onsubmit="return false">
+                                <div class="content mod-double">
+                                    <input class="form-control mod-data date-start" value="<?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?>" type="text" name="date" placeholder="<?php _e('时间'); ?>..." /><br />
+                                    <input class="form-control" type="text" value="<?=$this->lesson['songjing']?>" name="songjing" placeholder="<?php _e('诵经次数'); ?>..." /><br />
+                                    <input class="form-control" type="text" value="<?=$this->lesson['chanhui']?>" name="chanhui" placeholder="<?php _e('忏悔次数'); ?>..." /><br />
+                                    <input class="form-control" type="text" value="<?=$this->lesson['nianfo']?>" name="nianfo" placeholder="<?php _e('念佛次数'); ?>..." /><br />
+                                    <p>
+                                        <a class="pull-right btn btn-mini btn-success" onclick="reset();"><?php _e('清空'); ?></a>
+                                        <a class="pull-right btn btn-mini btn-success" onclick="AWS.ajax_post($('#lessons_add_form')); return false;"><?php _e('保存'); ?></a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- 侧边栏 -->
+                <div class="col-sm-12 col-md-3 aw-side-bar">
+                    <?php TPL::output('block/sidebar_menu.tpl.htm'); ?>
+                </div>
+                <!-- end 侧边栏 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function reset()
+    {
+        $('#lessons_add_form input').val('');
+    }
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

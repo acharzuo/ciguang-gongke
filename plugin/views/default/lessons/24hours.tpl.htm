@@ -1,0 +1,54 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="aw-content-wrap clearfix">
+                <div class="col-sm-12 col-md-9 aw-main-content">
+                    <div class="aw-mod aw-mod-invite-friend">
+                        <div class="mod-head common-head">
+                            <h2>
+                                <?php _e('24小时功课榜表'); ?>
+                                <a href="/lessons/record/" class="pull-right btn btn-mini btn-success">我要报功课</a>
+                            </h2>
+                        </div>
+
+                        <div class="mod-body aw-side-bar">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>诵经</th>
+                                    <th>忏悔</th>
+                                    <th>念佛</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($this->lessons as $k => $lesson) { ?>
+                                <tr>
+                                    <td><?=$lesson['user_name']?></td>
+                                    <td><?=$lesson['songjing']?></td>
+                                    <td><?=$lesson['chanhui']?></td>
+                                    <td><?=$lesson['nianfo']?></td>
+                                </tr>
+                                <?php } ?>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- 侧边栏 -->
+                <div class="col-sm-12 col-md-3 aw-side-bar">
+                    <?php TPL::output('block/sidebar_menu.tpl.htm'); ?>
+                </div>
+                <!-- end 侧边栏 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<?php TPL::output('global/footer.tpl.htm'); ?>
