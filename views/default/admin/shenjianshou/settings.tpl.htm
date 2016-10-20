@@ -1,0 +1,87 @@
+<?php TPL::output('admin/global/header.tpl.htm'); ?>
+<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+<style>
+
+    .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    padding: 0px 8px;
+    vertical-align: top;
+    height:70px;
+    line-height: 70px;
+    border-top: 1px solid #ddd;
+    }
+    .table-setting-tr {
+        vertical-align: middle;
+    }
+
+    .setting-value {
+        display: inline-flex;
+        vertical-align: middle;
+    }
+    .tutorial-link {
+        color: #428bca;
+        font-size: 14px;
+        text-decoration: underline;
+    }
+</style>
+<div class="aw-content-wrap">
+    <div class="mod">
+        <div class="mod-head">
+            <h3>
+                <span class="pull-left"><?php _e('神箭手云爬虫发布设置');?></span>
+            </h3>
+        </div>
+        <div class="tab-content mod-content" style='padding: 0px 20px;'>
+            <form action="admin/shenjianshou/ajax_ta/" method="post" id="config_form">
+                <table class="table" cellspacing='0' cellpadding='0'>
+                    <tbody>
+                        <tr class='table-setting-tr'>
+                            <td width="200" style="font-size: 14px;color:#333333;border-top:none;">当前插件版本</td>
+                            <td style="border-top:none;"><div class="setting-value"><span style="font-size: 14px;color:#333333;">v<?php _e($this->ta_version);?></span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="" style="font-size: 12px;color:#808080;">最新版本会定期在QQ群174631869中发布</span>
+                            </div></td>
+
+                        </tr>
+                        <tr class='table-setting-tr'>
+                            <td style="font-size: 14px;color:#333333;">神箭手云爬虫官网</td>
+                            <td><div class="setting-value"><a href="http://www.shenjianshou.cn" target="_blank" class='tutorial-link'>www.shenjianshou.cn</a></div></td>
+                        </tr>
+                        <tr class='table-setting-tr'>
+                            <td style="font-size: 14px;color:#333333;">发布网址</td>
+                            <td>
+                                <div class="setting-value">
+                                <span style="width:500px;padding-left:5px;"><?php _e($this->basic_web_address);?></span>
+                                <span class="" style='margin-left: 10px'>此地址为您网站访问地址，您可以复制该地址并填入神箭手后台 Wecenter 发布接口配置中的发布网址输入框内</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class='table-setting-tr'>
+                            <td style="font-size: 14px;color:#333333;">发布密码</td>
+                            <td>
+                                <div class="setting-value">
+                                    <input type="text" name="ta_password" value="<?php _e($this->ta_config['ta_password']);?>" style="width:500px;margin: 20px 0px 0px 0px;height: 30px;line-height: 30px;padding-left: 5px;" />
+                                    <span class="" style='margin-left: 10px'>建议修改成自己的常用密码，并填入神箭手后台Wecenter发布选项中的发布密码输入框内</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <div style="width: 260px;margin-left: auto;margin-right: auto;">
+                                    <a href="http://demo.shenjianshou.cn/pdoc/wecenter.html" target="_blank" class='tutorial-link' style="margin-right: 50px">查看使用教程</a>
+                                    <input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary" style="background-color:#428bca;" onclick="AWS.ajax_post($('#config_form'), function (type, result) {
+                                                AWS.alert(result.err);
+                                                if (result.errno == -1) {
+                                                    $('#proxy-url').val(result.rsm);
+                                                }
+                                            });" />
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+<?php TPL::output('admin/global/footer.tpl.htm'); ?>

@@ -1,0 +1,54 @@
+<?php if ($this->log) { ?>
+<?php foreach ($this->log AS $key => $val) { ?>
+<tr>
+	<td><?php echo $val['orderno']; ?></td>
+    <td><a href="shop/<?=$val['itemid']?>" target="_blank"><?=$val['itemname']?></a></td>
+	<td>
+    	<?php 
+        	if ($val['paytype'] == '1')
+            {
+            	echo '积分支付';
+            }
+            elseif ($val['paytype'] == '2')
+            {
+            	echo '现金支付';
+            }
+        ?>
+    </td>
+    <td>
+    	<?php 
+        	if ($val['paytype'] == '1')
+            {
+            	echo $val['paypoint'] . '积分';
+            }
+            elseif ($val['paytype'] == '2')
+            {
+            	echo $val['payrmb'] . '元';
+            }
+        ?>
+    </td>
+    <td>
+    	<span class="aw-text-color-oragne">
+        	<?php echo $val['num']; ?> 件
+        </span>
+    </td>
+    <td><?php echo date("Y-m-d H:i:s",$val['time']); ?></td> 
+    <td>
+    	<p>
+        <?php if ($val['status'] == 1) { ?>
+        	等待发货
+        <?php } else if ($val['status'] == 2) { ?>
+            已发货<br/>
+            <a href="javascript:;" onclick="ajax_request(G_BASE_URL + '/shop/ajax/get_order_info/', 'id=<?=$val['orderid']?>');">备注</a>
+        <?php } else if ($val['status'] == 3) { ?>
+            已取消<br/>
+            <a href="javascript:;" onclick="ajax_request(G_BASE_URL + '/shop/ajax/get_order_info/', 'id=<?=$val['orderid']?>');">备注</a>
+        <?php } ?>
+        </p>
+    </td>
+    
+    
+    
+</tr>
+<?php } ?>
+<?php } ?>

@@ -1,0 +1,280 @@
+CREATE TABLE IF NOT EXISTS `aws_charge_set` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `isopen` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0=关闭，1=开启',
+  `isrmb` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `ispoint` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `pointrate` int(5) unsigned NOT NULL DEFAULT '0',
+  `isalipay` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `alipayaccount` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `alipayid` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `alipaykey` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `istenpay` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `tenpayaccount` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `tenpayid` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `tenpaykey` varchar(255) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM   DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 导出表中的数据 `aws_charge_set`
+--
+
+INSERT INTO `aws_charge_set` (`id`, `isopen`, `isrmb`, `ispoint`, `pointrate`, `isalipay`, `alipayaccount`, `alipayid`, `alipaykey`, `istenpay`, `tenpayaccount`, `tenpayid`, `tenpaykey`) VALUES
+(1, 1, 1, 1, 5, 1, 'xxxx@126.com', '123456', '123456', 0, 'dfdf', '123', '1232');
+
+CREATE TABLE IF NOT EXISTS `aws_charge_list` (
+  `orderid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `orderno` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `payname` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '充值方式',
+  `paytype` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '充值类型',
+  `money` decimal(9,2) unsigned NOT NULL,
+  `pointnum` int(10) unsigned NOT NULL DEFAULT '0',
+  `time` int(10) unsigned NOT NULL,
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1=待付款，2=付款成功',
+  PRIMARY KEY (`orderid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `aws_users` ADD `rmb` DECIMAL( 9, 2 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `integral` ;
+
+CREATE TABLE IF NOT EXISTS `aws_group_category` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `pid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(128) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pid` (`pid`),
+  KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `aws_group_join` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `groupid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `jointime` int(10) unsigned NOT NULL DEFAULT '0',
+  `postnum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发帖数',
+  `replynum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '回帖数',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0=待审核，1=已审核',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `aws_group_list` (
+  `groupid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `picurl` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `pid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `catid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `isopen` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0=不开放，1=开放',
+  `ischeck` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0=不审核，1=审核',
+  `name` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(80) CHARACTER SET utf8 NOT NULL,
+  `time` int(10) unsigned NOT NULL,
+  `pageview` int(10) unsigned NOT NULL DEFAULT '0',
+  `joinnum` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '成员数',
+  `postnum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '总贴数',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0=待审核，1=已审核',
+  PRIMARY KEY (`groupid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `aws_group_set` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `ischeck` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0=不需要审核，1=需要',
+  `createfee` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+INSERT INTO `aws_group_set` (`id`, `ischeck`, `createfee`) VALUES
+(1, 0, 0);
+
+
+CREATE TABLE IF NOT EXISTS `aws_group_thread` (
+  `threadid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `groupid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `message` text CHARACTER SET utf8 NOT NULL,
+  `has_attach` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `pageview` int(10) unsigned NOT NULL DEFAULT '0',
+  `commentnum` int(10) unsigned NOT NULL DEFAULT '0',
+  `recommend` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `reply_uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `reply_username` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `replytime` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`threadid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `aws_group_thread_comments` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `threadid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `at_uid` mediumint(8) unsigned DEFAULT NULL,
+  `at_username` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `replytxt` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '回复引用内容',
+  `time` int(10) unsigned NOT NULL DEFAULT '0',
+  `comment` text CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `aws_task_joins` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(10) NOT NULL,
+  `taskid` int(10) NOT NULL,
+  `message` text NOT NULL,
+  `add_time` int(10) NOT NULL,
+  `access_key` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `taskid` (`taskid`),
+  KEY `add_time` (`add_time`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `aws_task_list` (
+  `taskid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `rewardtype` char(20) CHARACTER SET utf8 NOT NULL DEFAULT 'noreward',
+  `rewardnum` decimal(9,2) unsigned NOT NULL DEFAULT '0.00',
+  `message` text CHARACTER SET utf8 NOT NULL,
+  `has_attach` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '2' COMMENT '1=待审核，2=已审核，3=已拒绝',
+  `pageview` int(10) unsigned NOT NULL DEFAULT '0',
+  `joinnum` int(10) unsigned NOT NULL DEFAULT '0',
+  `time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `flag` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1=报名中，2=完成中，3=待确认，4=完成',
+  `joinuid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `joinusername` varchar(80) CHARACTER SET utf8 NOT NULL,
+  `jointime` int(10) unsigned NOT NULL DEFAULT '0',
+  `finishtime` int(10) unsigned NOT NULL DEFAULT '0',
+  `confirmtime` int(10) unsigned NOT NULL DEFAULT '0',
+  `user_reward` decimal(9,2) unsigned NOT NULL DEFAULT '0.00',
+  `admin_reward` decimal(9,2) unsigned NOT NULL DEFAULT '0.00',
+  `comment` text CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`taskid`)
+) ENGINE=MyISAM;
+
+
+CREATE TABLE IF NOT EXISTS `aws_task_set` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `isconfirm` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0=不需要审核，1=需要',
+  `destype` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1=积分，2=rmb，3=关闭',
+  `desnum` decimal(9,2) unsigned NOT NULL DEFAULT '0.00',
+  `joinfee` int(10) unsigned NOT NULL DEFAULT '0',
+  `isreward` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0=关闭，1=开启',
+  `adminrate` decimal(5,2) unsigned NOT NULL DEFAULT '1.00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+INSERT INTO `aws_task_set` (`id`, `isconfirm`, `destype`, `desnum`, `joinfee`, `isreward`, `adminrate`) VALUES
+(1, 1, 1, 10.00, 1, 1, 1.00);
+
+
+CREATE TABLE IF NOT EXISTS `aws_task_user` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `hirenum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '中标次数',
+  `dealingnum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '进行中的任务',
+  `finishnum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '完成了的任务',
+  `bestnum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '好评',
+  `mednum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '中评',
+  `badnum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '差评',
+  `commentnum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '评价次数',
+  `bestrate` decimal(5,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '好评率',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `aws_shop_address` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` mediumint(8) unsigned NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `province` varchar(64) CHARACTER SET utf8 NOT NULL,
+  `city` varchar(64) CHARACTER SET utf8 NOT NULL,
+  `address` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `postcode` int(10) unsigned NOT NULL,
+  `realname` varchar(60) CHARACTER SET utf8 NOT NULL,
+  `mobile` varchar(20) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `aws_shop_category` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `pid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pid` (`pid`),
+  KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `aws_shop_list` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `picurl` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '0',
+  `pid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `catid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `paytype` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1=积分，2=rmb，3=both',
+  `rmbprice` decimal(9,2) unsigned NOT NULL DEFAULT '0.00',
+  `pointprice` int(10) unsigned NOT NULL DEFAULT '0',
+  `description` text CHARACTER SET utf8,
+  `time` int(10) unsigned NOT NULL DEFAULT '0',
+  `stock` int(10) unsigned NOT NULL DEFAULT '0',
+  `sellnum` int(10) unsigned NOT NULL DEFAULT '0',
+  `pageview` int(10) unsigned NOT NULL DEFAULT '0',
+  `isopen` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `has_attach` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `aws_shop_order` (
+  `orderid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `itemid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `orderno` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `num` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `paytype` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '支付类型',
+  `payrmb` decimal(9,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '已支付RMB金额',
+  `paypoint` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '已支付的金币数量',
+  `time` int(10) unsigned NOT NULL,
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1=待发货，2=已发货，3=已取消',
+  `info` text CHARACTER SET utf8 COMMENT '备注信息',
+  PRIMARY KEY (`orderid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `aws_withdraw_list` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `type` varchar(60) CHARACTER SET utf8 NOT NULL,
+  `account` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `num` decimal(9,2) unsigned NOT NULL DEFAULT '0.00',
+  `time` int(10) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1=待审核，2=已审核，3=已拒绝',
+  `checkinfo` text CHARACTER SET utf8 NOT NULL,
+  `checktime` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `aws_withdraw_set` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` mediumint(8) unsigned NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `alipayaccount` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `tenpayaccount` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `province` varchar(64) CHARACTER SET utf8 NOT NULL,
+  `city` varchar(64) CHARACTER SET utf8 NOT NULL,
+  `bankname` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `branch` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `cardno` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `realname` varchar(64) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

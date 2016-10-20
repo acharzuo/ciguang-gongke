@@ -1,0 +1,50 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-user-setting">
+					<div class="tabbable">
+						<ul class="nav nav-tabs aw-nav-tabs active">
+							 <h2>我的帖子</h2>
+						</ul>
+					</div>					
+					<div class="tab-content clearfix">
+
+<div class="aw-mod aw-user-setting-points">
+
+	<div class="aw-mod-body">
+		<table class="table table-hover">
+			<thead>
+				<tr class="info">
+					<th width="150">帖子标题</th> 
+                    <th width="100">所属群组</th> 
+                    <th width="100">浏览量</th> 
+                    <th width="100">回复数</th> 
+                    <th width="100">发布时间</th> 
+				</tr>
+			</thead>
+            <tbody id="contents_log">
+            </tbody>
+	    </table>
+	    <!-- 加载更多内容 -->
+		<a class="aw-load-more-content" id="log_more">
+			<span><?php _e('更多'); ?>...</span>
+		</a>
+		<!-- end 加载更多内容 -->
+	</div>
+</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		AWS.load_list_view(G_BASE_URL + '/group/ajax/my_thread/', $('#log_more'), $('#contents_log'));
+	});
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

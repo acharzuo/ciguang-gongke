@@ -1,0 +1,58 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="aw-content-wrap clearfix">
+                <div class="col-sm-12 col-md-9 aw-main-content">
+                    <div class="aw-mod aw-mod-invite-friend">
+                        <div class="mod-head common-head">
+                            <h2>
+                                <?php echo $this->user_info['user_name'] ?><?php _e('的功课列表'); ?>
+
+                                <a href="lessons/record/" class="pull-right btn btn-mini btn-success">我要报功课</a>
+                                <a href="lessons/statistic/" class="pull-right btn btn-mini btn-success">功课图</a>
+                            </h2>
+                        </div>
+                        <div class="mod-body aw-side-bar">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>日期</th>
+                                        <th>诵经</th>
+                                        <th>忏悔</th>
+                                        <th>念佛</th>
+                                        <th>阅藏</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($this->lessons as $k => $lesson) { ?>
+                                    <tr>
+                                        <td><?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $lesson['date'])?></td>
+                                        <td><?=$lesson['songjing']?></td>
+                                        <td><?=$lesson['chanhui']?></td>
+                                        <td><?=$lesson['nianfo']?></td>
+                                        <td><?=$lesson['yuezangjing'] . ":" . $lesson['yuezangpin']?></td>
+                                        <td><a href="lessons/edit_lesson/?id=<?=$lesson['id']?>" class="btn btn-mini btn-success">编辑</a></td>
+                                    </tr>
+                                <?php } ?>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- 侧边栏 -->
+                <div class="col-sm-12 col-md-3 aw-side-bar">
+                    <?php TPL::output('block/sidebar_menu.tpl.htm'); ?>
+                </div>
+                <!-- end 侧边栏 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

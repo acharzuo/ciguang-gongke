@@ -1,0 +1,158 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<?php TPL::output('block/content_nav_menu.tpl.htm'); ?>
+
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-9 aw-main-content">
+                	<!-- 一级分类 -->
+                    <div class="aw-mod aw-topic-category">
+                        <div class="mod-body clearfix">
+                            <ul>
+                                <li><a <?php if(!$_GET['rewardtype']) {?> class="active" <?php } ?> href="task/orderby-<?=$_GET['orderby']?>">全部</a></li> 
+                                <li><a <?php if($_GET['rewardtype'] == 'rmb') {?> class="active" <?php } ?> href="task/rewardtype-rmb__orderby-<?=$_GET['orderby']?>">现金悬赏</a></li>  
+                                <li><a <?php if($_GET['rewardtype'] == 'point') {?> class="active" <?php } ?> href="task/rewardtype-point__orderby-<?=$_GET['orderby']?>">积分悬赏</a> </li>   
+                            </ul>
+                        </div>
+                        
+                        <div class="mod-body clearfix" style="margin-top:-10px;">
+                            <ul>
+                                <li><a <?php if(!$_GET['orderby']) {?> class="active" <?php } ?> href="task/rewardtype-<?=$_GET['rewardtype']?>">最新发布</a></li>  
+                                <li><a <?php if($_GET['orderby'] == 'rewardnum') {?> class="active" <?php } ?> href="task/orderby-rewardnum__rewardtype-<?=$_GET['rewardtype']?>">最多悬赏</a></li>
+                                <li><a <?php if($_GET['orderby'] == 'pageview') {?> class="active" <?php } ?> href="task/orderby-pageview__rewardtype-<?=$_GET['rewardtype']?>">最多浏览</a></li>
+                                <li><a <?php if($_GET['orderby'] == 'joinnum') {?> class="active" <?php } ?> href="task/orderby-joinnum__rewardtype-<?=$_GET['rewardtype']?>">最多报名</a></li> 
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end 一级分类 -->
+
+					<div class="aw-mod aw-article-list">
+						<?php if ($this->task_list) { ?>
+						<?php foreach ($this->task_list AS $key => $val) { ?> 
+						<div class="aw-item">
+							<a class="aw-user-name hidden-xs" href="people/<?php echo $val['user_info']['url_token']; ?>">
+								<img alt="" src="<?php echo get_avatar_url($val['uid'], 'mid'); ?>" />
+							</a>
+							<div class="aw-content">
+								<div class="mod-body">
+									<h2><a href="task/<?php echo $val['taskid']; ?>"><?php echo $val['title']; ?></a></h2>
+									<div class="aw-topic-bar">
+										<div class="tag-bar clearfix">
+											<?php foreach($this->task_topics[$val['taskid']] as $topic_key => $topic_val) { ?>
+											<span class="topic-tag">
+												<a href="topic/<?php echo $topic_val['url_token']; ?>" class="text" data-id="<?php echo $topic_val['topic_id']; ?>"><?php echo $topic_val['topic_title']; ?></a>
+											</span>
+											<?php } ?>
+										</div>
+									</div>
+									<div class="content-wrap">
+										<div class="content" id="detail_<?php echo $val['id']; ?>">
+											<div class="hide-content markitup-box">
+												<?php echo FORMAT::parse_attachs(nl2br(FORMAT::parse_markdown($val['message']))); ?>
+
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="mod-footer clearfix">
+									<span class="pull-right more-operate text-color-999">
+										<?php if ($val['rewardtype'] == 'rmb') { ?>
+                                        现金悬赏<span style="color:#ff6600;"><?=$val['rewardnum']?> 元</span>
+                                        <?php } if ($val['rewardtype'] == 'point') { ?>
+                                        积分悬赏<span style="color:#ff6600;"><?=$val['rewardnum']?> 个</span>
+                                        <?php } if ($val['rewardtype'] == 'noreward') { ?>
+                                        无悬赏
+                                        <?php } ?>
+                                        &nbsp;&nbsp;
+                                        <?=$val['user_info']['user_name']?> 发布于： <?=date_friendly($val['time'])?>
+                                        &nbsp;&nbsp;<?=$val['pageview']?> 次浏览
+                                        &nbsp;&nbsp;已有<?=$val['joinnum']?> 人报名
+									</span>
+								</div>
+							</div>
+						</div>
+						<?php } ?>
+
+						<?php echo $this->pagination; ?>
+
+						<?php } ?>
+					</div>
+					<!-- end 文章列表 -->
+				</div>
+				<!-- 侧边栏 -->
+				<div class="col-sm-3 col-md-3 aw-side-bar hidden-xs hidden-sm">
+                	<?php if ($this->user_id) { ?>
+                    <div class="aw-mod side-nav">
+                        <div class="mod-body">
+                            <ul>
+                                <?php if ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'] OR $this->user_info['permission']['publish_task']) { ?>
+                                <li><a href="task/publish/" target="_blank"><i class="icon icon-mytopic"></i>发布任务</a></li>
+                                <?php } ?>
+                                <li><a href="task/mytask/" target="_blank"><i class="icon icon-favor"></i>我发布的任务</a></li>
+                                <li><a href="task/intask/" target="_blank"><i class="icon icon-home"></i>我参加的任务</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    
+					<!-- 热门文章 -->
+					<div class="aw-mod aw-text-align-justify">
+						<div class="mod-head">
+							<h3><?php _e('现金悬赏排行'); ?></h3>
+						</div>
+                        <?php if ($this->hot_rmb_list) { ?>
+						<?php foreach ($this->hot_rmb_list AS $key => $val) { ?>
+						<div class="mod-body">
+							<ul>
+								<li><a href="task/<?php echo $val['taskid']; ?>"><?php echo $val['title']; ?></a></li>
+							</ul>
+						</div>
+                        <div class="mod-footer">
+                            <ul class="text-color-999">
+                                <li>
+                                    现金: <span style="color:#ff6600;"><?=$val['rewardnum']?> 元</span>
+                                    &nbsp;&nbsp;已有<span style="color:#ff6600;"><?=$val['joinnum']?> 人</span>报名
+                                    &nbsp;&nbsp;<span style="color:#ff6600;"><?=$val['pageview']?> 次</span>浏览
+                                </li>
+                            </ul>
+                        </div>
+                        <?php } ?>
+                        <?php } ?>
+					</div>
+					<!-- end 热门文章 -->
+                    
+                    <!-- 热门文章 -->
+					<div class="aw-mod aw-text-align-justify">
+						<div class="mod-head">
+							<h3><?php _e('积分悬赏排行'); ?></h3>
+						</div>
+                        <?php if ($this->hot_point_list) { ?>
+						<?php foreach ($this->hot_point_list AS $key => $val) { ?>
+						<div class="mod-body">
+							<ul>
+								<li><a href="task/<?php echo $val['taskid']; ?>"><?php echo $val['title']; ?></a></li>
+							</ul>
+						</div>
+                        <div class="mod-footer">
+                            <ul class="text-color-999">
+                                <li>
+                                    积分: <span style="color:#ff6600;"><?=$val['rewardnum']?> 个</span>
+                                    &nbsp;&nbsp;已有<span style="color:#ff6600;"><?=$val['joinnum']?> 人</span>报名
+                                    &nbsp;&nbsp;<span style="color:#ff6600;"><?=$val['pageview']?> 次</span>浏览
+                                </li>
+                            </ul>
+                        </div>
+                        <?php } ?>
+                        <?php } ?>
+					</div>
+					<!-- end 热门文章 -->
+				</div>
+				<!-- end 侧边栏 -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

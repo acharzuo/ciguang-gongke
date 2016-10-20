@@ -2,7 +2,7 @@
 <project version="4">
   <component name="PhpProjectServersManager">
     <servers>
-      <server host="localhost" id="3138cbfc-1eef-449a-b0f2-bb11732c6761" name="LocalhostApache" use_path_mappings="true">
+      <server host="qa.dizang7.cn" id="3138cbfc-1eef-449a-b0f2-bb11732c6761" name="qa.dizangy.cn" use_path_mappings="true">
         <path_mappings>
           <mapping local-root="$PROJECT_DIR$/plugin" remote-root="/" />
         </path_mappings>

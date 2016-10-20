@@ -1,0 +1,99 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-user-setting">
+					<div class="tabbable">
+						<ul class="nav nav-tabs aw-nav-tabs active">
+							<li<?php if ($_GET['act'] == 'list') { ?> class="active"<?php } ?>><a href="charge/list/"><?php _e('充值记录'); ?></a></li>
+							<li<?php if ($_GET['act'] == 'charge') { ?> class="active"<?php } ?>><a href="charge/charge/"><?php _e('账户充值'); ?></a></li>
+							
+							<h2> 我的现金：<?php _e($this->user_info['rmb']); ?> 元，我的积分：<?php _e($this->user_info['integral']); ?> 个</h2>
+						</ul>
+					</div>
+					
+					<div class="tab-content clearfix">
+                    	<div class="aw-mod">
+                            <div class="mod-body">
+                                <div class="aw-mod">
+                                    <form id="charge_form" method="post" action="charge/ajax/charge/" enctype="multipart/form-data" class="form-horizontal">
+                                        <div class="mod-body">
+                                            <?php if ($this->config['isopen']) { ?>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('充值方式'); ?>:</label>
+                                                <div class="col-lg-10">
+                                                	<?php if ($this->config['isalipay']) { ?>
+                                                    <input name="payname" class="apply-type" type="radio" value="alipay" checked="checked" /> <?php _e('支付宝'); ?> 
+                                                    <?php } ?>
+                                                    <?php if ($this->config['istenpay']) { ?> 
+                                                    &nbsp;
+                                                    <input name="payname" class="apply-type" type="radio" value="tenpay" /> <?php _e('财付通'); ?>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('充值类型'); ?>:</label>
+                                                <div class="col-lg-10">
+                                                    <?php if ($this->config['isrmb']) { ?> 
+                                                    <input name="paytype" id="paytypermb" class="apply-type" type="radio" value="rmb" checked="checked"/> 人民币
+                                                    <?php } ?>
+                                                    &nbsp;
+                                                    <?php if (get_setting('integral_system_enabled') == 'Y') { ?>
+                                                    
+                                                    <?php if ($this->config['ispoint']) { ?> 
+                                                    <input name="paytype" id="paytypepoint" class="apply-type" type="radio" value="point"  /> 积分
+                                                    <?php } ?>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label verify-name"><span><?php _e('充值金额'); ?></span>:</label>
+                                                <div class="col-lg-2">
+                                                    <input class="form-control" name="chargenum" type="text"/>
+                                                </div>元，必须为正整数
+                                                <label id='pointrate' style="display:none">
+                                                    <span style="color:#F00">1元 = <?php _e($this->config['pointrate']); ?> 个积分</span>
+                                                </label>
+                                            </div>
+                                            
+                                            <?php } else {?>
+                                            <div class="form-group">
+                                                <div class="col-lg-4">
+                                                    管理员暂未启用充值功能！
+                                                </div>
+                                            </div>
+                                            <?php } ?>
+                                            
+                                        </div>
+                                    </form>
+                                    <div class="mod-footer clearfix">
+                                        <a href="javascript:;" id="submit-form" class="btn btn-large btn-success pull-right" onclick="AWS.ajax_post($('#charge_form'))"><?php _e('提交'); ?></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function()
+	{
+		$('#paytypermb').click(function()
+		{;
+			$('#pointrate').css('display','none');
+		});
+		
+		$('#paytypepoint').click(function()
+		{;
+			$('#pointrate').css('display','');
+		});
+	});
+</script>
+<?php TPL::output('global/footer.tpl.htm'); ?>

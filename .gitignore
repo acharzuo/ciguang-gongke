@@ -1,3 +1,5 @@
 
 # 忽略Mac的权限文件
 .DS_Store
+cache
+tmp

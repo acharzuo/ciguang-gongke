@@ -1,0 +1,165 @@
+<?php TPL::output('admin/global/header.tpl.htm'); ?>
+<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+
+<div class="aw-content-wrap">
+    <div class="mod">
+        <div class="mod-head">
+            <h3>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#list" data-toggle="tab"><?php _e('提现记录'); ?></a></li>
+                    <li><a href="#search" data-toggle="tab"><?php _e('搜索'); ?></a></li>
+                </ul>
+            </h3>
+        </div>
+        <div class="mod-body tab-content">
+            <div class="tab-pane active" id="list">
+                <?php if ($_GET['action'] == 'search') { ?>
+                <div class="alert alert-info"><?php _e('找到 %s 条符合条件的内容', intval($this->total_num)); ?></div>
+                <?php } ?>
+
+                <form id="batchs_form" action="admin/withdraw/withdraw_batch/" method="post">
+                <div class="table-responsive">
+                <?php if ($this->list) { ?>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th align="center"><input type="checkbox" class="check-all"></th>
+                                <th align="center">提现用户</th>
+                                <th align="center">提现方式</th>
+                                <th align="center" width="*">提现账号</th>
+                                <th align="center">提现金额</th>
+                                <th align="center">提现时间</th>
+                                <th align="center">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($this->list AS $key => $val) { ?>
+						<tr>
+							<td align="center"><input type="checkbox" name="ids[]" value="<?=$val['id']?>"></td>
+                            <td align="center">
+                            	<a href="people/<?=urlencode($val['username'])?>" target="_blank">
+                                	<?=$val['username']?>
+                                </a>
+                            </td>
+							<td align="center"><?=$val['type']?></td>
+							<td align="center"><?=$val['account']?></td>
+                            <td align="center"><?=$val['num']?></td>
+							<td align="center"><?php echo date("Y-m-d H:i",$val['time']); ?></td>
+                            <td align="center">
+                             <?php if ($val['status'] == '1') { ?>
+                             	待审核
+                             <?php } else if ($val['status'] == '2') { ?>
+                             	已通过 
+                                <a href="javascript:;" onClick="ajax_request(G_BASE_URL + '/admin/withdraw/get_checkinfo/id-<?=$val['id']?>');" title="查看备注信息"><i class="aw-icon page-edit"></i></a>
+                                <br/>
+                                <?php echo date("Y-m-d H:i",$val['checktime']); ?>
+                             <?php } else if ($val['status'] == '3') { ?>
+                             	已拒绝
+                                <a href="javascript:;" onClick="ajax_request(G_BASE_URL + '/admin/withdraw/get_checkinfo/id-<?=$val['id']?>');" title="查看备注信息"><i class="aw-icon page-edit"></i></a>
+                                <br/>
+                                <?php echo date("Y-m-d H:i",$val['checktime']); ?>
+                             <?php } ?>
+                            </td>
+						</tr>
+						<?php } ?>
+                        </tbody>
+                    </table>
+                <?php } ?>
+                </div>
+                </form>
+                <div class="mod-table-foot">
+                    <?php echo $this->pagination; ?>
+
+                    <a class="btn btn-danger" onclick="$('#action').val('del'); AWS.ajax_post($('#batchs_form'));" href="javascript:;"><?php _e('删除'); ?></a>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="search">
+                <form method="post" action="admin/withdraw/list/" onsubmit="return false;" id="search_form" class="form-horizontal" role="form">
+				<input name="action" type="hidden" value="search" />
+
+                    <div class="form-group">
+                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('申请时间'); ?>:</label>
+                        <div class="col-sm-6 col-xs-9">
+                            <div class="row">
+                                <div class="col-xs-11  col-sm-5 mod-double">
+                                    <input type="text" class="form-control mod-data" value="<?php echo base64_decode($_GET['start_date']); ?>" name="start_date" />
+                                    <i class="icon icon-date"></i>
+                                </div>
+                                <span class="mod-symbol col-xs-1 col-sm-1">
+                                -
+                                </span>
+                                <div class="col-xs-11 col-sm-5">
+                                    <input type="text" class="form-control mod-data" value="<?php echo base64_decode($_GET['end_date']); ?>" name="end_date" />
+                                    <i class="icon icon-date"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('申请用户'); ?>:</label>
+
+                        <div class="col-sm-5 col-xs-8">
+                            <input class="form-control" type="text" value="<?php echo $_GET['username']; ?>" name="username" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('提现金额'); ?>:</label>
+
+                        <div class="col-sm-5 col-xs-8">
+                            <input type="text" name="money_min" value="<?php echo $_GET['money_min']; ?>" />
+							-
+							<input type="text" name="money_max" value="<?php echo $_GET['money_max']; ?>" />
+                        </div>
+                    </div>                
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('提现方式'); ?>:</label>
+
+                        <div class="col-sm-5 col-xs-8">
+                            <div class="btn-group mod-btn">
+                                <label type="button" class="btn mod-btn-color">
+                                    <input type="radio" name="type" value="1"<?php if ($_GET['type'] == '1') { ?> checked="checked"<?php } ?>> <?php _e('支付宝'); ?>
+                                </label>
+
+                                <label type="button" class="btn mod-btn-color">
+                                   <input type="radio" name="type" value="2"<?php if ($_GET['type'] == '2') { ?> checked="checked"<?php } ?>> <?php _e('财付通'); ?>
+                                </label>
+                                
+                                <label type="button" class="btn mod-btn-color">
+                                   <input type="radio" name="type" value="3"<?php if ($_GET['type'] == '3') { ?> checked="checked"<?php } ?>> <?php _e('银行卡'); ?>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('提现状态'); ?>:</label>
+                        <div class="col-sm-6 col-xs-9">
+                            <div class="row">
+                                <div class="col-xs-11  col-sm-5 mod-double">
+                                    <select name="status">
+                                        <option value="0" <?php if (!$_GET['status']) { ?>selected <?php } ?>>不限</option>
+                                        <option value="1" <?php if ($_GET['status'] == '1') { ?>selected <?php } ?>>待审核</option>
+                                        <option value="2" <?php if ($_GET['status'] == '2') { ?>selected <?php } ?>>已审核</option>
+                                        <option value="3" <?php if ($_GET['status'] == '3') { ?>selected <?php } ?>>已拒绝</option>
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-5 col-xs-8">
+                            <button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php _e('搜索'); ?></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php TPL::output('admin/global/footer.tpl.htm'); ?>

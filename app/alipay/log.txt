@@ -1,0 +1,30 @@
+﻿执行日期：20140402130455
+responseTxt=true
+ notify_url_log:isSign=true,service=alipay.wap.trade.create.direct&sign=d81d5271861348641160118090d25db1&sec_id=MD5&v=1.0&notify_data=<notify><payment_type>1</payment_type><subject>WeCenter账户充值</subject><trade_no>2014040258289339</trade_no><buyer_email>cjloved@126.com</buyer_email><gmt_create>2014-04-02 13:00:22</gmt_create><notify_type>trade_status_sync</notify_type><quantity>1</quantity><out_trade_no>139641478510851</out_trade_no><notify_time>2014-04-02 13:04:57</notify_time><seller_id>2088901636294491</seller_id><trade_status>TRADE_FINISHED</trade_status><is_total_fee_adjust>N</is_total_fee_adjust><total_fee>0.01</total_fee><gmt_payment>2014-04-02 13:00:33</gmt_payment><seller_email>yxf@wentouzi.com</seller_email><gmt_close>2014-04-02 13:00:33</gmt_close><price>0.01</price><buyer_id>2088102114715392</buyer_id><notify_id>0177ceaf20a04afd6d0fdbb2049821bb46</notify_id><use_coupon>N</use_coupon></notify>
+执行日期：20140402130455
+----> notify_data ----> <notify><payment_type>1</payment_type><subject>WeCenter账户充值</subject><trade_no>2014040258289339</trade_no><buyer_email>cjloved@126.com</buyer_email><gmt_create>2014-04-02 13:00:22</gmt_create><notify_type>trade_status_sync</notify_type><quantity>1</quantity><out_trade_no>139641478510851</out_trade_no><notify_time>2014-04-02 13:04:57</notify_time><seller_id>2088901636294491</seller_id><trade_status>TRADE_FINISHED</trade_status><is_total_fee_adjust>N</is_total_fee_adjust><total_fee>0.01</total_fee><gmt_payment>2014-04-02 13:00:33</gmt_payment><seller_email>yxf@wentouzi.com</seller_email><gmt_close>2014-04-02 13:00:33</gmt_close><price>0.01</price><buyer_id>2088102114715392</buyer_id><notify_id>0177ceaf20a04afd6d0fdbb2049821bb46</notify_id><use_coupon>N</use_coupon></notify><br/>
+执行日期：20140402130455
+----> the xml has been gettd ----> <br/>
+执行日期：20140402130455
+----> out_trade_no is ----> 139641478510851<br/>
+执行日期：20140402130455
+----> trade_status is ----> TRADE_FINISHED<br/>
+执行日期：20140402130455
+----> post_trade_status is ----> <br/>
+执行日期：20140402130455
+notify--->success
+执行日期：20140402130519
+responseTxt=true
+ notify_url_log:isSign=true,service=alipay.wap.trade.create.direct&sign=2bc8a027a2d04e2d68f73a2c4c7be094&sec_id=MD5&v=1.0&notify_data=<notify><payment_type>1</payment_type><subject>WeCenter账户充值</subject><trade_no>2014040258364339</trade_no><buyer_email>cjloved@126.com</buyer_email><gmt_create>2014-04-02 13:05:10</gmt_create><notify_type>trade_status_sync</notify_type><quantity>1</quantity><out_trade_no>139641508910506</out_trade_no><notify_time>2014-04-02 13:05:22</notify_time><seller_id>2088901636294491</seller_id><trade_status>TRADE_FINISHED</trade_status><is_total_fee_adjust>N</is_total_fee_adjust><total_fee>0.01</total_fee><gmt_payment>2014-04-02 13:05:22</gmt_payment><seller_email>yxf@wentouzi.com</seller_email><gmt_close>2014-04-02 13:05:21</gmt_close><price>0.01</price><buyer_id>2088102114715392</buyer_id><notify_id>4216f1b19e8a4e3c6c0c850f25b3f0e046</notify_id><use_coupon>N</use_coupon></notify>
+执行日期：20140402130519
+----> notify_data ----> <notify><payment_type>1</payment_type><subject>WeCenter账户充值</subject><trade_no>2014040258364339</trade_no><buyer_email>cjloved@126.com</buyer_email><gmt_create>2014-04-02 13:05:10</gmt_create><notify_type>trade_status_sync</notify_type><quantity>1</quantity><out_trade_no>139641508910506</out_trade_no><notify_time>2014-04-02 13:05:22</notify_time><seller_id>2088901636294491</seller_id><trade_status>TRADE_FINISHED</trade_status><is_total_fee_adjust>N</is_total_fee_adjust><total_fee>0.01</total_fee><gmt_payment>2014-04-02 13:05:22</gmt_payment><seller_email>yxf@wentouzi.com</seller_email><gmt_close>2014-04-02 13:05:21</gmt_close><price>0.01</price><buyer_id>2088102114715392</buyer_id><notify_id>4216f1b19e8a4e3c6c0c850f25b3f0e046</notify_id><use_coupon>N</use_coupon></notify><br/>
+执行日期：20140402130519
+----> the xml has been gettd ----> <br/>
+执行日期：20140402130519
+----> out_trade_no is ----> 139641508910506<br/>
+执行日期：20140402130519
+----> trade_status is ----> TRADE_FINISHED<br/>
+执行日期：20140402130519
+----> post_trade_status is ----> <br/>
+执行日期：20140402130519
+notify--->success

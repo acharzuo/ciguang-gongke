@@ -1,0 +1,53 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-user-setting">
+					<div class="tabbable">
+						<ul class="nav nav-tabs aw-nav-tabs active">
+							<li><a href="withdraw/set/">提现账号</a></li>
+                            <li class="active"><a href="withdraw/list/">提现记录</a></li>
+                            <li><a href="withdraw/">账户提现</a></li>
+						</ul>
+					</div>					
+					<div class="tab-content clearfix">
+
+<div class="aw-mod aw-user-setting-points">
+
+	<div class="aw-mod-body">
+		<table class="table table-hover">
+			<thead>
+				<tr class="info">
+					<th width="100">提现方式</th> 
+                    <th width="*">提现账号</th>
+                    <th width="100">提现金额</th>
+                    <th width="150">提现时间</th>
+                    <th width="150">状态</th>
+                    <th width="200">备注</th>
+				</tr>
+			</thead>
+            <tbody id="contents_log">
+            </tbody>
+	    </table>
+	    <!-- 加载更多内容 -->
+		<a class="aw-load-more-content" id="log_more">
+			<span><?php _e('更多'); ?>...</span>
+		</a>
+		<!-- end 加载更多内容 -->
+	</div>
+</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		AWS.load_list_view(G_BASE_URL + '/withdraw/ajax/list/', $('#log_more'), $('#contents_log'));
+	});
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

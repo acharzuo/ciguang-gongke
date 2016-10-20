@@ -1,0 +1,70 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container aw-publish aw-publish-article">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-12 aw-main-content">
+					<!-- tab 切换 -->
+					<ul class="nav nav-tabs aw-nav-tabs active">
+						<h2 class="hidden-xs"> <?php _e('发表帖子'); ?></h2>
+					</ul>
+					<!-- end tab 切换 -->
+					
+						<div class="aw-mod aw-mod-publish">
+							<div class="mod-body">
+                                <form action="group/ajax/<?php if ($this->info['threadid']) { ?>edit<?php } else { ?>publish<?php } ?>_thread/" method="post" id="myform" onsubmit="return false;">
+                                <input type="hidden" name="post_hash" value="<?=new_post_hash()?>" />
+                                <?php if ($this->info['threadid']) { ?>
+                                <input type="hidden" name="groupid" id="groupid" value="<?=$this->info['groupid']?>" />
+                                <input type="hidden" name="threadid" id="threadid" value="<?=$this->info['threadid']?>" />
+                                <?php } else { ?>
+                                <input type="hidden" name="groupid" id="groupid" value="<?=$_GET['groupid']?>" />
+                                <?php } ?>
+                                <input type="hidden" name="attach_access_key" value="<?=$this->attach_access_key?>" />
+                                
+                                <h3><?php _e('帖子标题'); ?>:</h3>
+								<div class="aw-publish-title">
+									<input type="text" name="title" value="<?php echo $this->info['title']; ?>" class="form-control" />
+								</div>
+                                
+								<h3><?php _e('帖子内容'); ?>:</h3>
+								<div class="aw-mod aw-editor-box">
+									<div class="mod-head">
+										<div class="wmd-panel">
+								            <div id="wmd-button-bar"></div>
+                                            <textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="message"><?php echo $this->info['message']; ?></textarea>
+								        </div>
+									</div>
+									<div class="mod-body">
+										<p class="text-color-999"><span class="pull-right" id="question_detail_message">&nbsp;</span></p>
+										<?php if (get_setting('upload_enable') == 'Y' AND get_setting('advanced_editor_enable' == 'Y')) { ?>
+										<div class="aw-upload-box">
+											<a class="btn btn-default">上传附件</a>
+											<div class="upload-container"></div>
+											<span class="text-color-999 aw-upload-tips hidden-xs"><?php _e('允许的附件文件类型'); ?>: <?php echo get_setting('allowed_upload_types'); ?></span>
+										</div>
+										<?php } ?>
+									</div>
+									<div class="mod-footer">
+										<div id="wmd-preview" class="wmd-panel wmd-preview"></div>
+									</div>
+								</div>
+
+							</div>
+							<div class="mod-footer clearfix">
+								<a class="btn btn-large btn-success btn-publish-submit" id="publish_submit" onclick="AWS.ajax_post($('#myform')); return false;"><?php _e('发布帖子'); ?></a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var ATTACH_ACCESS_KEY = '<?php echo $this->attach_access_key; ?>';
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

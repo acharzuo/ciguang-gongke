@@ -1,0 +1,51 @@
+<?php TPL::output('admin/global/header.tpl.htm'); ?>
+<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+
+<div class="aw-content-wrap">
+	<form action="admin/shop/cate_save/catid-<?php echo $this->category['id']; ?>" id="category_form" method="post">
+	<div class="mod">
+		<div class="mod-head">
+			<h3>
+				<span class="pull-left"><?php _e('分类编辑'); ?></span>
+			</h3>
+		</div>
+		<div class="tab-content mod-content">
+			<table class="table table-striped">
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('分类标题'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input class="form-control" type="text" name="name" value="<?php echo $this->category['name']; ?>" />
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('父级分类'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<select name="parent_id" class="form-control">
+									<option value="0"><?php _e('无'); ?></option>
+									<?php echo $this->category_option; ?>
+								</select>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tfoot>
+				<tr>
+					<td>
+						<input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#category_form'));" />
+					</td>
+				</tr>
+				</tfoot>
+			</table>
+		</div>
+		</div>
+	</form>
+</div>
+
+<?php TPL::output('admin/global/footer.tpl.htm'); ?>

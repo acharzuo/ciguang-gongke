@@ -1,0 +1,122 @@
+<?php TPL::output('admin/global/header.tpl.htm'); ?>
+<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+
+<div class="aw-content-wrap">
+    <form action="admin/withdraw/check_submit/?>" id="settings_form" method="post" enctype="multipart/form-data">
+    <div class="mod">
+        <div class="mod-head">
+            <h3>
+                <span class="pull-left"><?php _e('提现处理'); ?></span>
+            </h3>
+        </div>
+        <div class="tab-content mod-content">
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('提现用户'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                               <a href="people/<?=urlencode($this->info['username'])?>" target="_blank"><?=$this->info['username']?></a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('提现至'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                               <?=$this->info['type']?>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('提现账号'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                               <?=$this->info['account']?>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('提现金额'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                               <?=$this->info['num']?> 元
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('申请时间'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                               <?php echo date("Y-m-d H:i",$this->info['time']); ?>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('提现审核'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <?php if ($this->info['status'] == 1) { ?>
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="status" value="2"/> <?php _e('通过申请'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                       <input type="radio" name="status" value="3"/> <?php _e('拒绝申请'); ?>
+                                    </label>
+                                    <input name="id" value="<?=$this->info['id']?>" type="hidden">
+                                </div>
+                                <?php } elseif ($this->info['status'] == 2) { ?> 
+                            	审核通过&nbsp;&nbsp;&nbsp;&nbsp;操作时间：<?php echo date("Y-m-d H:i",$this->info['checktime']); ?>
+                                <?php } elseif ($this->info['status'] == 3) { ?> 
+                                已拒绝&nbsp;&nbsp;&nbsp;&nbsp;操作时间：<?php echo date("Y-m-d H:i",$this->info['checktime']); ?>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('处理说明：'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                               <textarea class="form-control" name="checkinfo"><?=$this->info['checkinfo']?></textarea>
+                备注说明，如转账流水号或其他信息，提现用户将看到此信息。
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+        
+        <?php if ($this->info['status'] == 1) { ?>
+        <div class="tab-content mod-content mod-one-btn">
+            <div class="center-block">
+                <input type="button" value="<?php _e('提交'); ?>" class="btn btn-primary" onclick="AWS.ajax_post($('#settings_form'));" />
+            </div>
+        </div>
+        <?php } ?>
+    </div>
+    </form>
+</div>
+
+<?php TPL::output('admin/global/footer.tpl.htm'); ?>

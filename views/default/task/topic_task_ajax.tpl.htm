@@ -1,0 +1,31 @@
+<?php if ($this->task_list) { ?>
+<?php foreach($this->task_list as $key => $val) { ?>
+<div class="aw-item">
+	<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="people/<?=urlencode($val['username'])?>" rel="nofollow"><img src="<?php echo get_avatar_url($val['uid'], 'max'); ?>" alt="" /></a>
+	
+	<div class="aw-questoin-content">
+		<h4>
+			<a href="task/<?php echo $val['taskid']; ?>" target="_blank"><?php echo $val['title']; ?></a>
+			<?php if ($val['topics']) { ?>
+			<?php foreach ($val['topics'] AS $t_key => $t_val) { ?>
+				<a href="topic/<?php echo $t_val['url_token']; ?>" class="aw-topic-name" data-id="<?php echo $t_val['topic_id']; ?>"><span><?php echo $t_val['topic_title']; ?></span></a><?php } ?>
+			<?php } ?>
+		</h4>
+		
+		<span class="aw-text-color-999">			
+			<?php if ($val['rewardtype'] == 'rmb') { ?>
+									现金悬赏<span style="color:#ff6600;"><?=$val['rewardnum']?> 元</span>
+                                    <?php } if ($val['rewardtype'] == 'point') { ?>
+                                    积分悬赏<span style="color:#ff6600;"><?=$val['rewardnum']?> 个</span>
+                                    <?php } if ($val['rewardtype'] == 'noreward') { ?>
+                                    无悬赏
+                                    <?php } ?>
+                                    &nbsp;&nbsp;
+                                    <?=$val['user_info']['user_name']?> 发布于： <?=date_friendly($val['time'])?>
+									&nbsp;&nbsp;<?=$val['pageview']?> 次浏览
+                                    &nbsp;&nbsp;已有<?=$val['joinnum']?> 人报名
+		</span>
+	</div>
+</div>
+<?php } ?>
+<?php } ?>

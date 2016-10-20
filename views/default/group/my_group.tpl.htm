@@ -1,0 +1,94 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="aw-content-wrap clearfix">
+                <div class="col-sm-12 col-md-9 aw-main-content">
+                    <!-- 一级分类 -->
+                    <div class="aw-mod aw-topic-category">
+                        <div class="mod-body clearfix">
+                            <ul>
+                                <li>
+                                     <a <?php if(!$_GET['pid']) {?> class="active" <?php } ?> href="group/">全部</a>
+                                </li>
+                                <?php foreach ($this->parent AS $key => $val) { ?>
+                                <li>
+                                    <a href="group/my_group/pid-<?=$val['id']?>"<?php if($_GET['pid'] == $val['id']) {?> class="active" <?php } ?>><?php echo $val['name']; ?></a>
+                                </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                        
+                        <?php if($this->child) {?>
+                        <div class="mod-body clearfix" style="margin-top:-10px;">
+                            <ul>
+                                <li>
+                                     <a <?php if(!$_GET['catid']) {?> class="active" <?php } ?> href="group/my_group/pid-<?=$_GET['pid']?>">全部</a>
+                                </li>
+                                <?php foreach ($this->child AS $key => $val) { ?>
+                                <li>
+                                    <a href="group/my_group/pid-<?=$_GET['pid']?>__catid-<?=$val['id']?>" <?php if($_GET['catid'] == $val['id']) {?> class="active" <?php } ?>><?php echo $val['name']; ?></a>
+                                </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                        <?php } ?>
+                    </div>
+                    <!-- end 一级分类 -->
+
+                    <!-- 群组列表 -->
+                    <div class="aw-mod aw-topic-list">
+                        <div class="mod-body clearfix">
+                            <?php if ($this->group_list) { ?>
+                            <?php foreach ($this->group_list AS $key => $val) { ?>
+                            <div class="aw-item">
+                                <!-- 话题图片 -->
+                                <a class="img aw-border-radius-5" href="group/<?=$val['groupid']?>">
+                                    <img src="/uploads/group/<?=$val['picurl']?>" width="50" height="50"/>
+                                </a>
+                                <!-- end 话题图片 -->
+                                <p class="clearfix">
+                                    <!-- 话题内容 -->
+                                    <span class="topic-tag">
+                                        <a class="aw-topic-name" href="group/<?=$val['groupid']?>"><?=$val['name']?></a>
+                                    </span>
+                                    <!-- end 话题内容 -->
+                                </p>
+                                <p class="text-color-999">
+                                    <span><?php _e('%s 个帖子', $val['postnum']); ?></span>
+								<span><?php _e('%s 位成员', $val['joinnum']); ?></span>
+                                </p>
+                            </div>
+                            <?php } ?>
+                            <?php } ?>
+                        </div>
+                        <div class="mod-footer clearfix">
+                            <?php echo $this->pagination; ?>
+                        </div>
+                    </div>
+                    <!-- end 群组列表 -->
+                </div>
+                
+                <!-- 侧边栏 -->
+                <div class="col-sm-3 col-md-3 aw-side-bar hidden-sm hidden-xs">
+                	<div class="aw-mod side-nav">
+                        <div class="mod-body">
+                            <ul>
+                                <?php if ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']) { ?>
+                                <li><a href="group/create/" target="_blank"><i class="icon icon-mytopic"></i>创建群组</a></li>
+                                <?php } ?>
+                                <li><a href="group/my_group/" target="_blank" class="active"><i class="icon icon-home"></i>我创建的群组</a></li>
+                                <li><a href="group/in_group/" target="_blank"><i class="icon icon-favor"></i>我加入的群组</a></li>
+                                <li><a href="group/my_thread/" target="_blank"><i class="icon icon-draft"></i>我发布的帖子</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- end 侧边栏 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

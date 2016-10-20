@@ -1,0 +1,136 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-9 aw-main-content">
+					<div class="aw-mod aw-topic-detail-title">
+						<div class="mod-body">
+							<img src="/uploads/group/<?=$this->info['picurl']?>" alt="<?=$this->info['name']?>" width="50" height="50"/>
+							<h2 class="pull-left"><?php echo $this->info['name']; ?></h2>
+                            
+							<div class="aw-topic-operate text-color-999">
+								群主：<a class="aw-user-name" href="people/<?=urlencode($this->info['username'])?>" data-id="<?=$this->info['uid']?>"><?=$this->info['username']?></a><br/>
+                                共<?=$this->info['joinnum']?> 名成员，<?=$this->info['postnum']?> 篇帖子<br />
+                                <?php if ($this->user_id) { ?>
+                                    <?php if (!$this->is_join_group) { ?>
+                                    <a class="btn btn-mini btn-success" href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/group/ajax/join/groupid-<?=$this->info['groupid']?>');">加入该群</a>
+                                    <?php } elseif ($this->is_join_group == 1) { ?>
+                                    <a class="btn btn-mini btn-danger" href="javascript:;">等待审核</a>
+                                    <?php } elseif ($this->is_join_group == 2) { ?>
+                                    <a class="btn btn-mini btn-primary" href="group/publish/groupid-<?=$this->info['groupid']?>" target="_blank">发表帖子</a>
+                                    <?php if ($this->info['uid']==$this->user_info['uid']) { ?>
+                                    <a class="btn btn-mini btn-danger" href="group/group_manage/groupid-<?=$this->info['groupid']?>" target="_blank">成员管理<?php if ($this->check_num) { ?>(<?=$this->check_num?>)<?php } ?></a>
+                                    <?php } else { ?>
+                                    
+                                    <a class="btn btn-mini btn-danger" href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认退出该吗?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/group/ajax/exit/groupid-<?=$this->info['groupid']?>');});"><?php _e('退出该群'); ?></a>
+                                    
+                                    <?php } ?>
+                                    <?php } ?>
+                                <?php } ?>
+							</div>
+						</div>
+					</div>
+
+					<div class="aw-mod aw-topic-list-mod">
+						<div class="mod-head">
+							<div class="tabbable">
+								<!-- tab 切换 -->
+								<ul class="nav nav-tabs aw-nav-tabs hidden-xs">
+									<li<?php if(!$_GET['orderby'] && !$_GET['recommend']) {?> class="active" <?php } ?>><a href="group/id-<?=$_GET['id']?>">全部帖子</a></li>
+                                    <li<?php if($_GET['recommend']) {?> class="active" <?php } ?>><a href="group/id-<?=$_GET['id']?>__recommend-1">精华帖子</a></li>
+                                    <li<?php if($_GET['orderby'] == 'commentnum') {?> class="active" <?php } ?>><a href="group/id-<?=$_GET['id']?>__orderby-commentnum">热门回复</a></li>
+								</ul>
+								<!-- end tab 切换 -->
+							</div>
+						</div>
+
+						<div class="mod-body">
+							<!-- tab 切换内容 -->
+							<div class="tab-content">
+								<div class="tab-pane active" id="all">
+									<div class="aw-mod">
+										<div class="mod-body">
+											<div class="aw-common-list" id="c_all_list">
+												<?php if ($this->thread_list) { ?>
+                                            	<?php foreach($this->thread_list as $key => $val) { ?>
+                                                <div class="aw-item">
+													<a class="aw-user-name" data-id="<?=$val['uid']; ?>" href="people/<?=urlencode($val['username'])?>" rel="nofollow"><img src="<?=get_avatar_url($val['uid'], 'max')?>" alt="" /></a>
+                                                    <div class="aw-question-content">
+                                                        <h4>
+                                                            <a href="group/thread/<?=$val['threadid']?>" target="_blank"><?=$val['title']?></a>
+                                                        </h4>
+                                                           
+                                                        <?php if ($val['reply_uid']) { ?>
+                                                        <span class="pull-right">			
+                                                            最后回复：<?=date_friendly($val['replytime'])?>
+                                                        </span>
+                                                        <?php } ?>
+                                                    
+                                                        <p>
+                                                            <a href="http://127.0.0.1/?/people/admin" class="aw-user-name" data-id="1">admin</a> 
+                                                            <span class="text-color-999">
+                                                                <?=date_friendly($val['time'])?>
+                                                                &nbsp;&nbsp;<?=$val['pageview']?> 次浏览
+                                                                &nbsp;&nbsp;<?=$val['commentnum']?> 次回复
+                                                        	</span>
+                                                            
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <?php } ?>
+                                           	 	<?php } ?>
+											</div>
+										</div>
+									</div>
+									<!-- end 推荐问题 -->
+								</div>
+							</div>
+							<!-- end tab 切换内容 -->
+                            <?php if ($this->pagination) { ?>
+                                <div class="clearfix"><?php echo $this->pagination; ?></div>
+                            <?php } ?>
+						</div>
+					</div>
+				</div>
+
+				<!-- 侧边栏 -->
+				<div class="col-sm-12 col-md-3 aw-side-bar hidden-xs">
+					<!-- 话题描述 -->
+					<div class="aw-mod aw-text-align-justify">
+						<div class="mod-head">
+							<h3>群信息 
+                            <?php if ((($this->info['uid'] == $this->user_id)) OR ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'])) { ?>
+                            &nbsp;<a href="group/create/<?=$this->info['groupid']?>">[编辑]</a></h3>
+                             <? } ?>
+						</div>
+						<div class="mod-body">
+							<p><?php echo nl2br(cjk_substr(strip_tags($this->info['description']), 0, 128, 'UTF-8', '... &nbsp; <a href="javascript:;" onclick="$(\'#i_about\').click()">查看全部</a>')); ?></p>
+						</div>
+					</div>
+					<!-- end 话题描述 -->					
+
+					<!-- xx人关注该话题 -->
+					<div class="aw-mod topic-status">
+						<div class="mod-head">
+							<h3><?php _e('已有 %s 人加入该群组', $this->info['joinnum']); ?></h3>
+						</div>
+						<div class="mod-body">
+							<div id="focus_users" class="aw-border-radius-5">
+                            <?php foreach ($this->joiners as $key => $val) { ?>
+                        <a class="aw-user-name" data-id="<?=$this->joiners[$key]['uid']?>" href="people/<?=urlencode($this->joiners[$key]['username'])?>" rel="nofollow"><img src="<?=get_avatar_url($this->joiners[$key]['uid'], 'max')?>" alt="<?=$this->joiners[$key]['username']?>"/></a>
+                        <?php } ?>
+                            </div>
+						</div>
+					</div>
+					<!-- end xx人关注该话题 -->
+
+				</div>
+				<!-- end 侧边栏 -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

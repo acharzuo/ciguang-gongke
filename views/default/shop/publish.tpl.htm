@@ -1,0 +1,130 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container aw-publish aw-publish-article">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-12 aw-main-content">
+					<!-- tab 切换 -->
+					<ul class="nav nav-tabs aw-nav-tabs active">
+						<h2 class="hidden-xs"> <?php _e('发布商品'); ?></h2>
+					</ul>
+					<!-- end tab 切换 -->
+					
+						<div class="aw-mod aw-mod-publish">
+							<div class="mod-body">
+								
+                                <h3><?php _e('商品封面'); ?>:</h3>
+                                
+                                <?php if ($this->info['id']) { ?> 
+								<form id="shop_form" method="post" action="shop/ajax/item_edit/" enctype="multipart/form-data" class="form-horizontal">		
+                                <div class="aw-publish-title>">
+                                     <a id="item_pic_uploader"><img src="<?=$this->picurl?>" alt="" id="item_pic" class="img-polaroid" width="50" height="50"/></a>
+                                     
+								</div>
+                                
+                                <?php } else {?>
+                                <form id="shop_form" method="post" action="shop/ajax/item_add/" enctype="multipart/form-data" class="form-horizontal">		
+                                <div class="aw-publish-title">
+									 <input name="attach" type="file" class="upload-attach form-control" />
+								</div>
+                                <?php } ?>
+                                
+                                <input type="hidden" name="post_hash" value="<?=new_post_hash()?>" />
+                                <input type="hidden" name="itemid" id="itemid" value="<?=$this->info['id']?>" />
+                                <input type="hidden" name="attach_access_key" value="<?=$this->attach_access_key?>" />
+                                
+                                <h3><?php _e('所属分类'); ?>:</h3>
+								<div class="aw-publish-title">
+									<select name="pid" onchange="child_select(this);">
+                                        <option value="0"><?php _e('请选择分类'); ?></option>
+                                            <?php echo $this->cate_parent; ?>
+                                        </option>
+                                    </select>&nbsp;
+                                    <select name="catid" id="child">
+                                        <?php echo $this->cate_child; ?>
+                                    </select>
+								</div>
+                                
+                                <h3><?php _e('商品名称'); ?>:</h3>
+								<div class="aw-publish-title">
+									<input type="text" name="title" value="<?php echo $this->info['title']; ?>" class="form-control" />
+								</div>
+                                
+                                <h3><?php _e('支付方式'); ?>:</h3>
+								<div class="aw-publish-title">
+									<label><input name="paytype" type="radio" value="1" <?php if($this->info['paytype']==1)  {?> checked="checked" <?php } ?> checked="checked"/> 积分 </label>&nbsp;
+				    <label><input name="paytype" type="radio" value="2" <?php if($this->info['paytype']==2)  {?> checked="checked" <?php } ?>/> 人民币 </label>&nbsp;
+                    <label><input name="paytype" type="radio" value="3" <?php if($this->info['paytype']==3)  {?> checked="checked" <?php } ?>/> 同时 </label>
+								</div>
+                                
+                                <h3><?php _e('商品价格'); ?>:</h3>
+								<div class="aw-publish-title">
+									金币<input type="text" name="pointprice" value="<?php echo $this->info['pointprice']; ?>" class="form-control" style="display:inline;width:10%;margin-bottom:0;" /> 个 或 人民币币<input type="text" name="rmbprice" value="<?php echo $this->info['rmbprice']; ?>" class="form-control" style="display:inline;width:10%;margin-bottom:0;" /> 元
+								</div>
+                                
+                                <h3><?php _e('商品库存'); ?>:</h3>
+								<div class="aw-publish-title">
+									<input type="text" name="stock" value="<?php echo $this->info['stock']; ?>" class="form-control" style="display:inline;width:10%;margin-bottom:0;" /> 件
+								</div>
+
+								<h3><?php _e('商品详情'); ?>:</h3>
+								<div class="aw-mod aw-editor-box">
+									<div class="mod-head">
+										<div class="wmd-panel">
+								            <div id="wmd-button-bar"></div>
+                                             <textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="description"><?php echo $this->info['message']; ?></textarea>
+								        </div>
+									</div>
+									<div class="mod-body">
+										<p class="text-color-999"><span class="pull-right" id="question_detail_message">&nbsp;</span></p>
+										<?php if (get_setting('upload_enable') == 'Y' AND get_setting('advanced_editor_enable' == 'Y')) { ?>
+										<div class="aw-upload-box">
+											<a class="btn btn-default">上传附件</a>
+											<div class="upload-container"></div>
+											<span class="text-color-999 aw-upload-tips hidden-xs"><?php _e('允许的附件文件类型'); ?>: <?php echo get_setting('allowed_upload_types'); ?></span>
+										</div>
+										<?php } ?>
+									</div>
+									<div class="mod-footer">
+										<div id="wmd-preview" class="wmd-panel wmd-preview"></div>
+									</div>
+								</div>
+
+							</div>
+							<div class="mod-footer clearfix">
+								<a class="btn btn-large btn-success btn-publish-submit" id="publish_submit" onclick="AWS.ajax_post($('#shop_form')); return false;"><?php _e('发布商品'); ?></a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+var ATTACH_ACCESS_KEY = '<?php echo $this->attach_access_key; ?>';
+</script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	if ($('#item_pic_uploader').length)
+	{
+		var fileupload = new FileUpload('avatar', $('#item_pic_uploader'), $('#item_pic'), G_BASE_URL + '/shop/ajax/upload_item_pic/id-<?=$this->info['id']?>', 'item_pic');
+	}
+});
+</script>
+
+<script type="text/javascript">
+function child_select(pid) 
+{
+    var pid = $(pid).val();
+	$.get(G_BASE_URL + '/shop/ajax/get_child_by_pid/pid' + '-' + pid, function (result) 
+	{ 
+		$('#child').html(result.err);
+	}, 'json');
+}
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

@@ -1,0 +1,226 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="aw-content-wrap clearfix">
+                <div class="col-sm-12 col-md-9 aw-main-content aw-article-content">
+                <div class="aw-mod aw-topic-bar hide" data-type="thread" data-id="<?php echo $this->info['threadid']; ?>"></div>
+                    <div class="aw-mod aw-question-detail">
+                        <div class="mod-head">
+                            <h1>
+                                <?php if ($this->info['recommend']) { ?> <span style="font-size:12px; color:#F00">精</span><?php } ?>
+                           		<?=$this->info['title']?>
+                            </h1>
+
+                            <?php if ($this->info['uid'] == $this->user_info['uid'] || $this->is_group_owner || $this->user_info['permission']['is_administortar'] || $this->user_info['permission']['is_moderator']) { ?>
+                            <div class="operate clearfix">
+                                <!-- 下拉菜单 -->
+                                <div class="btn-group pull-left">
+                                    <a class="btn btn-gray dropdown-toggle" data-toggle="dropdown" href="javascript:;">...</a>
+                                    <div class="dropdown-menu aw-dropdown pull-right" role="menu" aria-labelledby="dropdownMenu">
+                                        <ul class="aw-dropdown-list">
+                                        
+                                        <li>
+											<a href="group/publish/<?=$this->info['threadid']?>">编辑帖子</a>
+										</li>
+                                        <?php if ($this->is_group_owner || $this->user_info['permission']['is_administortar'] || $this->user_info['permission']['is_moderator']) { ?>
+                                        <li>
+											<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/group/ajax/recommend/threadid-<?=$this->info['threadid']?>');"><?php if ($this->info['recommend']) { ?>取消精华<?php } else { ?>设为精华<?php } ?></a>
+										</li>
+                                        
+										<li>                                            
+                                            <a href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除该帖子吗?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/group/ajax/remove_thread/threadid-<?=$this->info['threadid']?>');});"><?php _e('删除帖子'); ?></a>
+                                            
+										</li>
+                                        <?php } ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- end 下拉菜单 -->
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <div class="mod-body">
+                            <div class="content markitup-box">
+                                <?php echo $this->info['message']; ?>
+
+                                <?php if ($this->info['attachs']) {  ?>
+                                <div class="aw-upload-img-list">
+                                <?php foreach ($this->info['attachs'] AS $attach) { ?>
+                                <?php if ($attach['is_image'] AND !in_array($attach['id'], $this->info['attachs_ids'])) { ?>
+                                    <a href="<?php echo $attach['attachment']; ?>" target="_blank" data-fancybox-group="thumb" rel="lightbox"><img src="<?php echo $attach['attachment']; ?>" class="img-polaroid" alt="<?php echo $attach['file_name']; ?>" /></a>
+                                <?php } ?>
+                                <?php } ?>
+                                </div>
+                                <?php } ?>
+
+                                <?php if ($this->info['attachs']) {  ?>
+                                <ul class="aw-upload-file-list">
+                                    <?php foreach ($this->info['attachs'] AS $attach) { ?>
+                                    <?php if (!$attach['is_image'] AND !in_array($attach['id'], $this->info['attachs_ids'])) { ?>
+                                        <li><a href="<?php echo download_url($attach['file_name'], $attach['attachment']); ?>"><i class="icon icon-attach"></i> <?php echo $attach['file_name']; ?></a></li>
+                                    <?php } ?>
+                                    <?php } ?>
+                                </ul>
+                                <?php } ?>
+                            </div>
+                            <div class="meta clearfix">
+                    
+
+                                <span class="pull-right  more-operate">
+                                    <a class="text-color-999 dropdown-toggle" data-toggle="dropdown">
+                                        <i class="icon icon-share"></i> <?php _e('分享'); ?>
+                                    </a>
+                                    <div aria-labelledby="dropdownMenu" role="menu" class="aw-dropdown shareout pull-right">
+                                        <ul class="aw-dropdown-list">
+                                            <li><a onclick="AWS.User.share_out('tsina');"><i class="icon icon-weibo"></i> <?php _e('微博'); ?></a></li>
+                                            <li><a onclick="AWS.User.share_out('qzone');"><i class="icon icon-qzone"></i> <?php _e('QZONE'); ?></a></li>
+                                            <li><a onclick="AWS.User.share_out('weixin');"><i class="icon icon-wechat"></i> <?php _e('微信'); ?></a></li>
+                                        </ul>
+                                    </div>
+
+                                    <em class="text-color-999"><?php echo date_friendly($this->info['time'], 604800, 'Y-m-d'); ?></em>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 文章评论 -->
+                    <div class="aw-mod">
+                        <div class="mod-head common-head">
+                            <h2><?php _e('%s 个回复', $this->info['commentnum']); ?></h2>
+                        </div>
+
+                        <div class="mod-body aw-feed-list">
+                            <?php if ($this->comments) { ?>
+
+                                <?php foreach ($this->comments AS $key => $val) { ?>
+                                <div class="aw-item" id="answer_list_<?php echo $val['id']; ?>">
+                                    <div class="mod-head">
+                                        <a class="aw-user-img aw-border-radius-5" href="people/<?=urlencode($val['username'])?>">
+                                            <img src="<?php echo get_avatar_url($val['uid'], 'mid'); ?>" alt="<?php echo $val['username']; ?>" />
+                                        </a>
+                                        <span class="text-color-999 pull-right"><?=$val['level']?>楼</span>
+                                        <p>
+                                            <a href="people/<?=urlencode($val['username'])?>"><?=$val['username']?></a><?php if ($val['uid'] == $this->info['uid']) { ?><font style="font-size:12px; color:#F00"> 楼主</font><?php } ?><?php if ($val['at_uid']) { ?> <?php _e('回复'); ?> <a href="people/<?=urlencode($val['at_username'])?>"><?=$val['at_username']?></a><?php } ?>
+                                        </p>
+                                        <?php if($val['replytxt']) {?>
+                                            <div class="alert alert-warning">
+                                                “<?php echo nl2br(strip_ubb(cjk_substr($val['replytxt'], 0, 40, 'UTF-8', '...'))); ?>”
+                                            </div>
+                                        <? }?>
+                                    </div>
+                                    <div class="mod-body">
+                                        <div class="markitup-box">
+                                            <?php echo nl2br($val['comment']); ?>
+                                        </div>
+                                    </div>
+                                    <div class="mod-footer">
+                                        <div class="meta">
+                                            <span class="pull-right text-color-999"><?php echo date_friendly($val['time']); ?></span>
+                                            <?php if ($this->user_id) { ?>
+                                                <a class="aw-thread-comment text-color-999" data-id="<?php echo $val['uid']; ?>"  comment-id="<?=$val['id']?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>
+                                                <?php if (($val['uid'] == $this->user_id) || $this->is_group_owner || $this->user_info['permission']['is_administortar'] || $this->user_info['permission']['is_moderator']) { ?>
+                                                <a class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/group/ajax/remove_comment/', 'commentid=<?php echo $val['id']; ?>');});"><i class="icon icon-trash"></i> <?php _e('删除'); ?></a>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+
+                        <?php if ($this->pagination) { ?>
+                            <div class="clearfix"><?php echo $this->pagination; ?></div>
+                        <?php } ?>
+                    </div>
+                    <!-- end 文章评论 -->
+
+                    <!-- 回复编辑器 -->
+                    <div class="aw-mod aw-article-replay-box">
+                        <a name="answer_form"></a>
+                        <?php if (!$this->user_id) { ?>
+                        <p align="center"><?php _e('回贴请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
+                        <?php } else { ?>
+                        <form action="group/ajax/save_comment/" onsubmit="return false;" method="post" id="answer_form">
+		        		<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
+		        		<input type="hidden" name="threadid" value="<?=$this->info['threadid']; ?>" />
+                        <div class="mod-head">
+                           <a href="people/<?=urlencode($this->user_info['user_name'])?>" class="aw-user-name"><img alt="<?=$this->user_info['user_name']?>" src="<?=get_avatar_url($this->user_info['uid'], 'mid')?>" /></a>
+                        </div>
+                        <div class="mod-body">
+                            <textarea rows="3" name="message" id="comment_editor" class="form-control autosize" placeholder="写下你的评论..."  /></textarea>
+                        </div>
+                        <div class="mod-footer clearfix">
+                            <a href="javascript:;" onclick="AWS.ajax_post($('#answer_form'), AWS.ajax_processer, 'reply');" class="btn btn-normal btn-success pull-right btn-submit btn-reply"><?php _e('回复'); ?></a>
+                        </div>
+                        </form>
+                        <?php } ?>
+                    </div>
+                    <!-- end 回复编辑器 -->
+                </div>
+                <!-- 侧边栏 -->
+                <div class="col-sm-12 col-md-3 aw-side-bar hidden-sm hidden-xs">
+                    <!-- 发起人 -->
+                    <div class="aw-mod user-detail">
+                        <div class="mod-head">
+                            <h3><?php _e('楼主'); ?></h3>
+                        </div>
+                        <div class="mod-body">
+                            <dl>
+                                <dt class="pull-left aw-border-radius-5">
+                                    <a href="people/<?=urlencode($this->info['username'])?>"><img alt="<?=$this->info['username']?>" src="<?=get_avatar_url($this->info['uid'], 'mid')?>" /></a>
+                                </dt>
+                                <dd class="pull-left">                                
+                                    <a class="aw-user-name" href="people/<?php echo $this->info['user_info']['url_token']; ?>" data-id="<?php echo $this->info['user_info']['uid']; ?>"><?php echo $this->info['user_info']['user_name'];?></a>
+                                    <?php if ($this->info['user_info']['verified']) { ?>
+                                        <i class="icon-v<?php if ($this->info['user_info']['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->info['user_info']['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i>
+                                    <?php } ?>
+
+                                    <?php if ($this->info['user_info']['uid'] != $this->user_id AND $this->user_id) { ?>
+                                    
+                                    
+                                    
+                                    
+                                    <a class="icon-inverse follow tooltips icon icon-plus <?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->info['user_info']['uid']; ?>);" data-original-title="<?php if ($this->user_follow_check) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?>"></a>
+                                    <?php } ?>
+                                    <p><?php echo $this->info['user_info']['signature']; ?></p>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="mod-footer clearfix">
+                            <div class="aw-topic-bar">
+                                <ul class="text-color-999">
+                                    <li>
+                                        <?php _e('积分'); ?>: <span><?=$this->info['user_info']['integral']; ?></span>
+                                    </li>
+                                    <li>
+                                        <?php _e('威望'); ?>: <span><?=$this->info['user_info']['reputation']; ?></span>
+                                    </li>
+                                    <li>
+                                        <?php _e('发布时间'); ?>: <?php echo date_friendly($this->info['time']); ?>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end 发起人 -->
+                </div>
+                <!-- end 侧边栏 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		if ($('.aw-article-vote.disabled').length)
+		{
+			$('.aw-article-vote.disabled a').attr('onclick', '');
+		}
+	});
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

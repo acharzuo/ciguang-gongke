@@ -1,0 +1,119 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-user-setting">
+					<div class="tabbable">
+						<ul class="nav nav-tabs aw-nav-tabs active">
+							 <li class="active"><a href="group/create/"><?php _e('创建群组'); ?></a></li>
+							 <h2>群组管理</h2>
+						</ul>
+					</div>
+				
+					<div class="tab-content clearfix">
+                    	<div class="aw-mod">
+                            <div class="mod-body">
+                                <div class="aw-mod">
+                                        <div class="mod-body">
+                                        <?php if ($this->info['groupid']) { ?>
+                                        <form id="myform" method="post" action="group/ajax/group_edit/" enctype="multipart/form-data" class="form-horizontal">
+                                        	<div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('群封面'); ?>:</label>
+                                                <div class="col-lg-10">
+                            						<a id="item_pic_uploader"><img src="<?=$this->picurl?>" alt="" id="item_pic" class="img-polaroid" width="50" height="50"/></a>
+                                                </div>
+                                            </div>
+                                         <input type="hidden" name="groupid" value="<?=$this->info['groupid']?>" />
+                                        <?php } else {?>
+                                        <form id="myform" method="post" action="group/ajax/group_create/" enctype="multipart/form-data" class="form-horizontal">
+                                        	 <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('群封面'); ?>:</label>
+                                                <div class="col-lg-5">
+                                                	<input name="attach" type="file" class="upload-attach form-control" />
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('是否开放'); ?>:</label>
+                                                <div class="col-lg-8">
+                                                    <label><input name="isopen" type="radio" value="1" <?php if($this->info['isopen'])  {?> checked="checked" <?php } ?> checked="checked"/> 开放 </label>&nbsp;
+				    <label><input name="isopen" type="radio" value="0" <?php if(!$this->info['isopen'])  {?> checked="checked" <?php } ?>/> 不开放 </label><p class="text-color-999">群组是否对外开放，如果开放则所有人都可查看群组内容</p>
+                                                </div>
+                                            </div>
+                                            
+                                           <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('入群验证'); ?>:</label>
+                                                <div class="col-lg-8">
+                                                    <label><input name="ischeck" type="radio" value="1" <?php if($this->info['ischeck'])  {?> checked="checked" <?php } ?> checked="checked"/> 是 </label>&nbsp;
+				    <label><input name="ischeck" type="radio" value="0" <?php if(!$this->info['ischeck'])  {?> checked="checked" <?php } ?>/> 否 </label>
+                    <p class="text-color-999">用户加群时是否需要验证。</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('所属分类'); ?>:</label>
+                                                <div class="col-lg-8">
+                                                    <select name="pid" onchange="child_select(this);">
+                                                        <option value="0"><?php _e('请选择分类'); ?></option>
+                                                            <?php echo $this->cate_parent; ?>
+                                                        </option>
+                                                    </select>&nbsp;
+                                                    <select name="catid" id="child">
+                                                        <?php echo $this->cate_child; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('群名称'); ?>:</label>
+                                                <div class="col-lg-3">
+                                                    <input class="form-control" name="name" type="text"value="<?=$this->info['name']?>"/>
+                                                     <p class="text-color-999">群名称不能超过10个字</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('群简介'); ?>:</label>
+                                                <div class="col-lg-8">
+                                                    <textarea class="form-control" name="description" style="width:500px;height:150px;"><?=$this->info['description']?></textarea>
+                    <p class="text-color-999">群简介不能超过120个字。</p>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </form>
+                                    <div class="mod-footer clearfix">
+                                        <a href="javascript:;" id="submit-form" class="btn btn-large btn-success pull-right"onclick="AWS.ajax_post($('#myform'))"><?php _e('提交'); ?></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function () {
+	if ($('#item_pic_uploader').length)
+	{
+		var fileupload = new FileUpload('avatar', $('#item_pic_uploader'), $('#item_pic'), G_BASE_URL + '/group/ajax/upload_group_pic/id-<?=$this->info['groupid']?>', 'item_pic');
+	}
+});
+</script>
+
+<script type="text/javascript">
+function child_select(pid) 
+{
+    var pid = $(pid).val();
+	$.get(G_BASE_URL + '/group/ajax/get_child_by_pid/pid' + '-' + pid, function (result) 
+	{ 
+		$('#child').html(result.err);
+	}, 'json');
+}
+</script>
+<?php TPL::output('global/footer.tpl.htm'); ?>

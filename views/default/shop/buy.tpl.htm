@@ -1,0 +1,82 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-user-setting">
+					<div class="tabbable">
+						<ul class="nav nav-tabs aw-nav-tabs active">
+                    		 <li><a href="shop/order/"><?php _e('我的订单'); ?></a></li>
+							 <h2><a href="shop/<?=$this->item_info['id']?>" target="_blank"><?=$this->item_info['title']?></a></h2>
+						</ul>
+					</div>
+					
+					<div class="tab-content clearfix">
+                    	<div class="aw-mod">
+                            <div class="mod-body">
+                                <div class="aw-mod">
+                                    <form id="buy_form" method="post" action="shop/ajax/buy/" enctype="multipart/form-data" class="form-horizontal">
+                                        <div class="mod-body">
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('账户余额'); ?>:</label>
+                                                <div class="col-lg-10">
+                                                	我的现金：<?php _e($this->user_info['rmb']); ?> 元，我的积分：<?php _e($this->user_info['integral']); ?> 个
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('商品信息'); ?>:</label>
+                                                <div class="col-lg-8">
+                                                <?php if ($this->item_info['paytype'] == 1 || $this->item_info['paytype'] == 3) { ?> 
+                    积分：<span style="color:#ff6600;"><?=$this->item_info['pointprice']?> 个</span> &nbsp;&nbsp;
+                    <?php } ?>
+                    <?php if ($this->item_info['paytype'] == 2 || $this->item_info['paytype'] == 3) { ?> 
+				    人民币：<span style="color:#ff6600;"><?=$this->item_info['rmbprice']?> 元</span> &nbsp;&nbsp;
+                    <?php } ?>
+                    剩余库存：<span style="color:#ff6600;"><?=$this->item_info['stock']?> 件</span>
+                                                </div>
+                                            </div>
+                                            <input name="itemid" type="hidden" value="<?=$this->item_info['id']?>"/>
+                                            
+                                           <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('支付方式'); ?>:</label>
+                                                <div class="col-lg-8">
+                                                   <?php if ($this->item_info['paytype'] == 1 || $this->item_info['paytype'] == 3) { ?> 
+                    <input name="paytype" type="radio" value="1" checked="checked"/> 积分
+                    <?php } ?>
+                    <?php if ($this->item_info['paytype'] == 2 || $this->item_info['paytype'] == 3) { ?> 
+				    <input name="paytype" type="radio" value="2"  /> 人民币
+                    <?php } ?>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('购买数量'); ?>:</label>
+                                                <div class="col-lg-2">
+                                                   <input class="form-control" name="num" type="text"/>
+                                                </div>件
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('订单备注'); ?>:</label>
+                                                <div class="col-lg-3">
+                                                    <textarea class="form-control" name="info" style="width:500px;height:150px;"></textarea>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </form>
+                                    <div class="mod-footer clearfix">
+                                        <a href="javascript:;" id="submit-form" class="btn btn-large btn-success pull-right"onclick="AWS.ajax_post($('#buy_form'))"><?php _e('提交'); ?></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php TPL::output('global/footer.tpl.htm'); ?>

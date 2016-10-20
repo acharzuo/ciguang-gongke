@@ -1,0 +1,110 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<?php TPL::output('block/content_nav_menu.tpl.htm'); ?>
+
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-9 aw-main-content">
+                	<!-- 一级分类 -->
+                    <div class="aw-mod aw-topic-category">
+                        <div class="mod-body clearfix">
+                            <ul>
+                                <li><a <?php if(!$_GET['rewardtype']) {?> class="active" <?php } ?> href="task/intask/flag-<?=$_GET['flag']?>">全部</a></li> 
+                                <li><a <?php if($_GET['rewardtype'] == 'rmb') {?> class="active" <?php } ?> href="task/intask/rewardtype-rmb__flag-<?=$_GET['flag']?>">现金悬赏</a></li>  
+                                <li><a <?php if($_GET['rewardtype'] == 'point') {?> class="active" <?php } ?> href="task/intask/rewardtype-point__flag-<?=$_GET['flag']?>">积分悬赏</a></li>   
+                            </ul>
+                        </div>
+                        
+                        <div class="mod-body clearfix" style="margin-top:-10px;">
+                            <ul>
+                               <li><a <?php if(!$_GET['flag']) {?> class="active" <?php } ?> href="task/intask/rewardtype-<?=$_GET['rewardtype']?>">报名中</a></li>  
+                               <li><a <?php if($_GET['flag'] == '2') {?> class="active" <?php } ?> href="task/intask/flag-2__rewardtype-<?=$_GET['rewardtype']?>">等待交稿</a></li>
+                               <li><a <?php if($_GET['flag'] == '3') {?> class="active" <?php } ?> href="task/intask/flag-3__rewardtype-<?=$_GET['rewardtype']?>">等待确认</a></li>
+                               <li><a <?php if($_GET['flag'] == '4') {?> class="active" <?php } ?> href="task/intask/flag-4__rewardtype-<?=$_GET['rewardtype']?>">已完成</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end 一级分类 -->
+
+					<div class="aw-mod aw-article-list">
+						<?php if ($this->task_list) { ?>
+						<?php foreach ($this->task_list AS $key => $val) { ?> 
+						<div class="aw-item">
+							<a class="aw-user-name hidden-xs" href="people/<?php echo $val['user_info']['url_token']; ?>">
+								<img alt="" src="<?php echo get_avatar_url($val['uid'], 'mid'); ?>" />
+							</a>
+							<div class="aw-content">
+								<div class="mod-body">
+									<h2><a href="task/<?php echo $val['taskid']; ?>"><?php echo $val['title']; ?></a></h2>
+									<div class="aw-topic-bar">
+										<div class="tag-bar clearfix">
+											<?php foreach($this->task_topics[$val['taskid']] as $topic_key => $topic_val) { ?>
+											<span class="topic-tag">
+												<a href="topic/<?php echo $topic_val['url_token']; ?>" class="text" data-id="<?php echo $topic_val['topic_id']; ?>"><?php echo $topic_val['topic_title']; ?></a>
+											</span>
+											<?php } ?>
+										</div>
+									</div>
+									<div class="content-wrap">
+										<div class="content" id="detail_<?php echo $val['id']; ?>">
+											<div class="hide-content markitup-box">
+												<?php echo FORMAT::parse_attachs(nl2br(FORMAT::parse_markdown($val['message']))); ?>
+
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="mod-footer clearfix">
+									<span class="pull-right more-operate text-color-999">
+										<?php if ($val['rewardtype'] == 'rmb') { ?>
+                                        现金悬赏<span style="color:#ff6600;"><?=$val['rewardnum']?> 元</span>
+                                        <?php } else if ($val['rewardtype'] == 'point') { ?>
+                                        积分悬赏<span style="color:#ff6600;"><?=$val['rewardnum']?> 个</span>
+                                        <?php } else if ($val['rewardtype'] == 'noreward') { ?>
+                                        无悬赏
+                                        <?php } ?>
+                                        &nbsp;&nbsp;
+                                        <?=$val['user_info']['user_name']?> 发布于： <?=date_friendly($val['time'])?>
+                                        &nbsp;&nbsp;<?=$val['pageview']?> 次浏览
+                                        &nbsp;&nbsp;已有<?=$val['joinnum']?> 人报名
+                                        <?php if ($val['flag'] == 2) { ?>
+                                        &nbsp;&nbsp;<a href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('交稿前请确保稿件已经递交给雇主，交稿后次任务将由雇主进行最后确认！'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/task/ajax/hand_over/taskid-<?=$val['taskid']?>');});" ><?php _e('【交稿】'); ?></a>
+                                        <?php } else if ($val['flag'] == 3) { ?>
+                                       &nbsp;&nbsp;<font color="#FF0000">等待雇主确认</font></a>
+                                        <?php } else if ($val['flag'] == 4) { ?>
+                                       &nbsp;&nbsp;<span style="color:#F00">任务完成<?php if ($val['rewardtype'] == 'rmb') { ?> ，获得赏金<?=$val['user_reward']?> 元<?php } else if ($val['rewardtype'] == 'point') { ?> ，获得赏金<?=$val['user_reward']?> 个积分 <?php } ?></span>
+                                        <?php }  ?>
+									</span>
+								</div>
+							</div>
+						</div>
+						<?php } ?>
+
+						<?php echo $this->pagination; ?>
+
+						<?php } ?>
+					</div>
+					<!-- end 文章列表 -->
+				</div>
+				<!-- 侧边栏 -->
+				<div class="col-sm-3 col-md-3 aw-side-bar hidden-xs hidden-sm">
+                	<?php if ($this->user_id) { ?>
+                    <div class="aw-mod side-nav">
+                        <div class="mod-body">
+                            <ul>
+                                <li><a href="task/mytask/" target="_blank"><i class="icon icon-favor"></i>我发布的任务</a></li>
+                                <li><a class="active" href="task/intask/" target="_blank"><i class="icon icon-home"></i>我参加的任务</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+				</div>
+				<!-- end 侧边栏 -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

@@ -1,0 +1,157 @@
+<?php TPL::output('admin/global/header.tpl.htm'); ?>
+<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+
+<div class="aw-content-wrap">
+    <form action="admin/charge/save/" id="settings_form" method="post">
+    <div class="mod">
+        <div class="mod-head">
+            <h3>
+                <span class="pull-left"><?php _e('系统设置'); ?></span>
+            </h3>
+        </div>
+        <div class="tab-content mod-content">
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('是否启用充值模块'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="isopen" value="1"<?php if ($this->setting['isopen']) { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                       <input type="radio" name="isopen" value="0"<?php if (!$this->setting['isopen']) { ?> checked="checked"<?php } ?> /><?php _e('否'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('是否启用现金充值'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="isrmb" value="1"<?php if ($this->setting['isrmb']) { ?> checked="checked"<?php } ?> /><?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                       <input type="radio" name="isrmb" value="0"<?php if (!$this->setting['isrmb']) { ?> checked="checked"<?php } ?> /><?php _e('否'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('是否启用积分充值'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="ispoint" value="1"<?php if ($this->setting['ispoint']) { ?> checked="checked"<?php } ?> /><?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                       <input type="radio" name="ispoint" value="0"<?php if (!$this->setting['ispoint']) { ?> checked="checked"<?php } ?> /><?php _e('否'); ?>
+                                    </label>
+                                    
+                                    <span class="help-block"><?php _e('只有系统开启积分功能时才有效'); ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('人民币购买力'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="pointrate" class="form-control" type="text" value="<?php echo $this->setting['pointrate']; ?>"/>
+
+                                <span class="help-block"><?php _e('每一元人民币可以购买多少个积分，必须为整数，且只有开启积分充值时才有效'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mod-head">
+            <h3>
+                <span class="pull-left"><?php _e('支付宝即时到账设置'); ?></span>
+            </h3>
+        </div>
+        <div class="tab-content mod-content">
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('是否启用支付宝'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="isalipay" value="1"<?php if ($this->setting['isalipay']) { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                       <input type="radio" name="isalipay" value="0"<?php if (!$this->setting['isalipay']) { ?> checked="checked"<?php } ?> /><?php _e('否'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>                          
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('支付宝账号'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="alipayaccount" class="form-control" type="text" value="<?php echo $this->setting['alipayaccount']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('合作者ID'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="alipayid" class="form-control" type="text" value="<?php echo $this->setting['alipayid']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('KEY'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="alipaykey" class="form-control" type="text" value="<?php echo $this->setting['alipaykey']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="tab-content mod-content mod-one-btn">
+            <div class="center-block">
+                <input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary" onclick="AWS.ajax_post($('#settings_form'));" />
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<?php TPL::output('admin/global/footer.tpl.htm'); ?>

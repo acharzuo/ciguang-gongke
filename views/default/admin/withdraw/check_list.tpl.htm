@@ -1,0 +1,66 @@
+<?php TPL::output('admin/global/header.tpl.htm'); ?>
+<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+
+<div class="aw-content-wrap">
+    <div class="mod">
+        <div class="mod-head">
+            <h3>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#list" data-toggle="tab"><?php _e('提现申请'); ?></a></li>
+                </ul>
+            </h3>
+        </div>
+        <div class="mod-body tab-content">
+            <div class="tab-pane active" id="list">
+                <?php if ($_GET['action'] == 'search') { ?>
+                <div class="alert alert-info"><?php _e('找到 %s 条符合条件的内容', intval($this->total_num)); ?></div>
+                <?php } ?>
+
+                <form id="batchs_form" action="admin/withdraw/check_batch/" method="post">
+                <div class="table-responsive">
+                <?php if ($this->list) { ?>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th align="center"><input type="checkbox" class="check-all"></th>
+                                <th align="center">提现用户</th>
+                                <th align="center">提现方式</th>
+                                <th align="center" width="*">提现账号</th>
+                                <th align="center">提现金额</th>
+                                <th align="center">提现时间</th>
+                                <th align="center">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($this->list AS $key => $val) { ?>
+						<tr>
+							<td align="center"><input type="checkbox" name="ids[]" value="<?=$val['id']?>"></td>
+                            <td align="center">
+                            	<a href="people/<?=urlencode($val['username'])?>" target="_blank">
+                                	<?=$val['username']?>
+                                </a>
+                            </td>
+                            <td align="center"><?=$val['type']?></td>
+                            <td align="center"><?=$val['account']?></td>
+							<td align="center"><?=$val['num']?></td>
+							<td align="center"><?php echo date("Y-m-d H:i",$val['time']); ?></td>
+                            <td align="center">
+                            	<a href="admin/withdraw/check/id-<?=$val['id']?>" class="icon icon-edit md-tip" title="<?php _e('审核'); ?>" data-toggle="tooltip"></a>
+                            </td>
+						</tr>
+						<?php } ?>
+                        </tbody>
+                    </table>
+                <?php } ?>
+                </div>
+                </form>
+                <div class="mod-table-foot">
+                    <?php echo $this->pagination; ?>
+
+                    <a class="btn btn-danger" onclick="$('#action').val('del'); AWS.ajax_post($('#batchs_form'));" href="javascript:;"><?php _e('删除'); ?></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php TPL::output('admin/global/footer.tpl.htm'); ?>

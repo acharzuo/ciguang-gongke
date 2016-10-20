@@ -1,0 +1,18 @@
+
+<div class="alert alert-danger hide error_message"><i class="icon icon-delete"></i> <em></em></div>
+    <form action="task/ajax/task_comment/" method="post" id="quick_publish" onsubmit="return false">
+    	评分：<select name="rate" >
+                  <option value="1">&nbsp;好评&nbsp;</option>
+                  <option value="2">&nbsp;中评</option>
+                  <option value="3">&nbsp;差评</option>
+              </select>
+              <input type="hidden" name="taskid" value="<?=$this->taskid?>">
+              <div style="height:10px;"></div>
+        <textarea name="comment" class="aw-publish-box-supplement-content form-control"  style="height:200px;"></textarea>
+    </form>
+
+<div class="modal-footer">
+    <span class="pull-right">
+        <button class="btn btn-large btn-success" onclick="AWS.ajax_post($('#quick_publish'), AWS.ajax_processer, 'error_message');">提交评价</button>
+    </span>
+</div>

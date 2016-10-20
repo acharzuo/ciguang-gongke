@@ -1,0 +1,128 @@
+<?php TPL::output('admin/global/header.tpl.htm'); ?>
+<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+
+<div class="aw-content-wrap">
+    <form action="admin/task/save/" id="settings_form" method="post">
+    <div class="mod">
+        <div class="mod-head">
+            <h3>
+                <span class="pull-left"><?php _e('系统设置'); ?></span>
+            </h3>
+        </div>
+        <div class="tab-content mod-content">
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('是否开启任务审核'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="isconfirm" value="1"<?php if ($this->settings['isconfirm']) { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                       <input type="radio" name="isconfirm" value="0"<?php if (!$this->settings['isconfirm']) { ?> checked="checked"<?php } ?> /><?php _e('否'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('发布费类型'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="destype" value="1"<?php if ($this->settings['destype']==1) { ?> checked="checked"<?php } ?> /> <?php _e('积分'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="destype" value="2"<?php if ($this->settings['destype']==2) { ?> checked="checked"<?php } ?> /> <?php _e('人民币'); ?>
+                                    </label>
+                                    
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="destype" value="3"<?php if ($this->settings['destype']==3) { ?> checked="checked"<?php } ?> /> <?php _e('不启用'); ?>
+                                    </label>
+                                    <span class="help-block"><?php _e('启用后，用户发布任务时会扣除用户积分或者人民币'); ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('发布费'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="desnum" class="form-control" type="text" value="<?php if($this->settings['destype']==1) { echo intval($this->settings['desnum']); } else {echo $this->settings['desnum'];} ?>"/>
+
+                                <span class="help-block"><?php _e('发布任务时扣除多少费用，如果【发布费类型】没有启用，则此处设置无效'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('报名费'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="joinfee" class="form-control" type="text" value="<?php echo $this->settings['joinfee']; ?>"/>
+
+                                <span class="help-block"><?php _e('用户报名参加任务时所扣除的积分数量，留空或者为0表示不扣除'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('是否开启悬赏'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="isreward" value="1"<?php if ($this->settings['isreward']) { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                       <input type="radio" name="isreward" value="0"<?php if (!$this->settings['isreward']) { ?> checked="checked"<?php } ?> /><?php _e('否'); ?>
+                                    </label>
+                                    <span class="help-block"><?php _e('开启后允许用户悬赏一定数额的积分或者人民币'); ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('手续费费率(%)'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="adminrate" class="form-control" type="text" value="<?php echo $this->settings['adminrate']; ?>"/>
+
+                                <span class="help-block"><?php _e('百分比，任务完成后网站所收的提成，留空或者为0表示不收费'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+        
+        <div class="tab-content mod-content mod-one-btn">
+            <div class="center-block">
+                <input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary" onclick="AWS.ajax_post($('#settings_form'));" />
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<?php TPL::output('admin/global/footer.tpl.htm'); ?>

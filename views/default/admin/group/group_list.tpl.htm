@@ -1,0 +1,132 @@
+<?php TPL::output('admin/global/header.tpl.htm'); ?>
+<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+
+<div class="aw-content-wrap">
+    <div class="mod">
+        <div class="mod-head">
+            <h3>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#list" data-toggle="tab"><?php _e('群组管理'); ?></a></li>
+                    <li><a href="#search" data-toggle="tab"><?php _e('搜索'); ?></a></li>
+                </ul>
+            </h3>
+        </div>
+        <div class="mod-body tab-content">
+            <div class="tab-pane active" id="list">
+                <?php if ($_GET['action'] == 'search') { ?>
+                <div class="alert alert-info"><?php _e('找到 %s 条符合条件的内容', intval($this->total_num)); ?></div>
+                <?php } ?>
+
+                <form id="batchs_form" action="admin/group/group_batch/" method="post">
+                <div class="table-responsive">
+                <?php if ($this->list) { ?>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th align="center"><input type="checkbox" class="check-all"></th>
+                                <th align="center" style="*">群组名称</th>
+                                <th align="center">创建者</th>
+                                <th align="center">是否开放</th>
+                                <th align="center">是否审核</th>
+                                <th align="center">浏览量</th>
+                                <th align="center">成员数</th>
+                                <th align="center">总帖数</th>
+                                <th align="center">创建时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($this->list AS $key => $val) { ?>
+						<tr>
+							<td align="center"><input type="checkbox" name="groupids[]" value="<?=$val['groupid']?>"></td>
+							<td align="center"><a href="group/<?=$val['groupid']?>" target="_blank"><?=$val['name']?></a></td>
+                            <td align="center">
+                            	<a href="people/<?=urlencode($val['username'])?>" target="_blank">
+                                	<?=$val['username']?>
+                                </a>
+                            </td>
+							<td align="center">
+                            <?php if (!$val['isopen']) { ?>
+                                <abbr title="私密群，不对群外人员开放">不开放</abbr>
+                             <?php } else { ?>
+                                <abbr title="公开群，对群外人员开放">开放</abbr>
+                             <?php } ?>
+                            </td>
+							<td align="center">
+                            <?php if (!$val['ischeck']) { ?>
+                                <abbr title="用户加入群组，时无需通过群组审核">无需审核</abbr>
+                             <?php } else { ?>
+                                <abbr title="用户加入群组时，需要通过群组审核">需审核</abbr>
+                             <?php } ?>
+                            </td>
+							<td align="center"><?=$val['pageview']?> 次</td>
+                            <td align="center"><?=$val['joinnum']?> 人</td>
+                            <td align="center"><a href="admin/group/thread/action-search__groupid-<?=$val['groupid']?>__post_type-ajax"><abbr title="点击查看帖子"><?=$val['postnum']?> 篇</abbr></a></td>
+                            <td align="center"><?php echo date("Y-m-d H:i",$val['time']); ?></td>
+						</tr>
+						<?php } ?>
+                        </tbody>
+                    </table>
+                <?php } ?>
+                </div>
+                </form>
+                <div class="mod-table-foot">
+                    <?php echo $this->pagination; ?>
+
+                    <a class="btn btn-danger" onclick="$('#action').val('del'); AWS.ajax_post($('#batchs_form'));" href="javascript:;"><?php _e('删除'); ?></a>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="search">
+                <form method="post" action="admin/group/list/" onsubmit="return false;" id="search_form" class="form-horizontal" role="form">
+
+                    <input name="action" type="hidden" value="search" />
+
+                    <div class="form-group">
+                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('群主名称'); ?>:</label>
+
+                        <div class="col-sm-5 col-xs-8">
+                            <input class="form-control" type="text" value="<?php echo $_GET['username']; ?>" name="username" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('群名称'); ?>:</label>
+
+                        <div class="col-sm-5 col-xs-8">
+                            <input class="form-control" type="text" value="<?php echo $_GET['keyword']; ?>" name="keyword" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('创建时间'); ?>:</label>
+
+                        <div class="col-sm-6 col-xs-9">
+
+                            <div class="row">
+                                <div class="col-xs-11  col-sm-5 mod-double">
+                                    <input type="text" class="form-control mod-data" value="<?php echo base64_decode($_GET['start_date']); ?>" name="start_date" />
+                                    <i class="icon icon-date"></i>
+                                </div>
+                                <span class="mod-symbol col-xs-1 col-sm-1">
+                                -
+                                </span>
+                                <div class="col-xs-11 col-sm-5">
+                                    <input type="text" class="form-control mod-data" value="<?php echo base64_decode($_GET['end_date']); ?>" name="end_date" />
+                                    <i class="icon icon-date"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-5 col-xs-8">
+                            <button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php _e('搜索'); ?></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php TPL::output('admin/global/footer.tpl.htm'); ?>

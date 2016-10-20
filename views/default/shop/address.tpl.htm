@@ -1,0 +1,83 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-user-setting">
+					<div class="tabbable">
+						<ul class="nav nav-tabs aw-nav-tabs active">
+							 <li class="active"><a href="shop/address/"><?php _e('收货地址'); ?></a></li>
+                    		 <li><a href="shop/order/"><?php _e('我的订单'); ?></a></li>
+							 <h2><a href="shop/<?=$this->item_info['id']?>" target="_blank"><?=$this->item_info['title']?></a></h2>
+						</ul>
+					</div>
+					
+					<div class="tab-content clearfix">
+                    	<div class="aw-mod">
+                            <div class="mod-body">
+                                <div class="aw-mod">
+                                    <form id="charge_form" method="post" action="shop/ajax/address/" enctype="multipart/form-data" class="form-horizontal">
+                                        <div class="mod-body">
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('所属城市'); ?>:</label>
+                                                <div class="col-lg-10">
+                                                	<select name="province" class="select_area"></select> <select name="city" class="select_area"></select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('详细地址'); ?>:</label>
+                                                <div class="col-lg-8">
+                                                    <input class="form-control" name="address" type="text" value="<?=$this->info['address']?>"/>
+                                                </div>
+                                            </div>
+                                            
+                                           <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('邮政编码'); ?>:</label>
+                                                <div class="col-lg-2">
+                                                    <input class="form-control" name="postcode" type="text"value="<?=$this->info['postcode']?>"/>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('联系人'); ?>:</label>
+                                                <div class="col-lg-2">
+                                                    <input class="form-control" name="realname" type="text"value="<?=$this->info['realname']?>"/>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('联系电话'); ?>:</label>
+                                                <div class="col-lg-3">
+                                                    <input class="form-control" name="mobile" type="text"value="<?=$this->info['mobile']?>"/>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </form>
+                                    <div class="mod-footer clearfix">
+                                        <a href="javascript:;" id="submit-form" class="btn btn-large btn-success pull-right"onclick="AWS.ajax_post($('#charge_form'))"><?php _e('提交'); ?></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+	$('.select_area').LocationSelect({
+        labels: ["<?php _e('请选择省份或直辖市'); ?>", "<?php _e('请选择城市'); ?>"],
+        elements: document.getElementsByTagName("select"),
+        detector: function () {
+            this.select(["<?php echo $this->info['province']; ?>", "<?php echo $this->info['city']; ?>"]);
+        },
+		dataUrl: G_STATIC_URL + '/js/areas.js'
+    });
+});
+</script>
+<?php TPL::output('global/footer.tpl.htm'); ?>

@@ -1,0 +1,68 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-user-setting">
+					<div class="tabbable">
+						<ul class="nav nav-tabs aw-nav-tabs active">
+							<li><a href="withdraw/set/">提现账号</a></li>
+                            <li><a href="withdraw/list/">提现记录</a></li>
+                            <li class="active"><a href="withdraw/">账户提现</a></li>
+						</ul>
+					</div>
+					
+					<div class="tab-content clearfix">
+                    	<div class="aw-mod">
+                            <div class="mod-body">
+                                <div class="aw-mod">
+                                    <form id="myform" method="post" action="withdraw/ajax/withdraw/" enctype="multipart/form-data" class="form-horizontal">
+                                        <div class="mod-body">
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('账户余额'); ?>:</label>
+                                                <div class="col-lg-10">
+                                                	我的现金：<?php _e($this->user_info['rmb']); ?> 元
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('提现至'); ?>:</label>
+                                                <div class="col-lg-6">
+                                                    <?php if ($this->info['alipayaccount']) { ?> 
+                                                    <label><input name="type" class="apply-type" type="radio" value="alipay"  checked="checked"/> 支付宝</label>
+                                                    <?php } ?>
+                                                    <?php if ($this->info['tenpayaccount']) { ?> 
+                                                     &nbsp;
+                                                    <label><input name="type" class="apply-type" type="radio" value="tenpay" /> 财付通</label>
+                                                    <?php } ?>
+                                                    <?php if ($this->info['cardno']) { ?> 
+                                                     &nbsp;
+                                                    <label><input name="type" class="apply-type" type="radio" value="bank" /> 银行卡</label>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+                                            
+                                           <div class="form-group">
+                                                <label class="col-lg-2 control-label"><?php _e('提现金额'); ?>:</label>
+                                                <div class="col-lg-4">
+                                                    <input class="form-control" name="num" type="text"  placeholder="单位元，必须为正数。" />
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </form>
+                                    <div class="mod-footer clearfix">
+                                        <a href="javascript:;" id="submit-form" class="btn btn-large btn-success pull-right"onclick="AWS.ajax_post($('#myform'))"><?php _e('提交'); ?></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php TPL::output('global/footer.tpl.htm'); ?>

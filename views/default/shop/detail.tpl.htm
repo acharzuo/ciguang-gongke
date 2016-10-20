@@ -1,0 +1,107 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="aw-content-wrap clearfix">
+                <div class="col-sm-12 col-md-9 aw-main-content aw-article-content">
+                    <div class="aw-mod aw-question-detail">
+                        <div class="mod-head">
+                            <h1>
+                                <?php echo $this->item_info['title']; ?>
+                            </h1>
+
+                            <?php if ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']) { ?>
+                            <div class="operate clearfix">
+                                <!-- 下拉菜单 -->
+                                <div class="btn-group pull-left">
+                                    <a class="btn btn-gray dropdown-toggle" data-toggle="dropdown" href="javascript:;">...</a>
+                                    <div class="dropdown-menu aw-dropdown pull-right" role="menu" aria-labelledby="dropdownMenu">
+                                        <ul class="aw-dropdown-list">
+                                           <!--li>
+												<a href="javascript:;" onclick="ajax_request(G_BASE_URL + '/shop/ajax/lock/', 'id=<?=$this->item_info['id']?>');"><?php if ($this->item_info['isopen']) { ?><?php _e('下架商品'); ?><?php } else { ?><?php _e('上架商品'); ?><?php } ?></a>
+											</li-->
+											<li>
+												<a href="shop/publish/<?=$this->item_info['id']?>" target="_blank"> 编辑商品</a>									
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- end 下拉菜单 -->
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <div class="mod-body">
+                            <div class="content markitup-box">
+                                <?php echo $this->item_info['description']; ?>
+
+                                <!-- 图片附件 begin -->
+                                <?php if ($this->item_info['attachs']) {  ?>
+                                <div class="aw-upload-img-list">
+                                <?php foreach ($this->item_info['attachs'] AS $attach) { ?>
+                                <?php if ($attach['is_image'] AND !in_array($attach['id'], $this->item_info['attachs_ids'])) { ?>
+                                    <a href="<?php echo $attach['attachment']; ?>" target="_blank" data-fancybox-group="thumb" rel="lightbox"><img src="<?php echo $attach['attachment']; ?>" class="img-polaroid" alt="<?php echo $attach['file_name']; ?>" /></a>
+                                <?php } ?>
+                                <?php } ?>
+                                </div>
+                                <?php } ?>
+                                <!-- 图片附件 end -->
+
+                                <!-- 其他附件 begin -->
+                                <?php if ($this->item_info['attachs']) {  ?>
+                                <ul class="aw-upload-file-list">
+                                    <?php foreach ($this->item_info['attachs'] AS $attach) { ?>
+                                    <?php if (!$attach['is_image'] AND !in_array($attach['id'], $this->item_info['attachs_ids'])) { ?>
+                                        <li><a href="<?php echo download_url($attach['file_name'], $attach['attachment']); ?>"><i class="icon icon-attach"></i> <?php echo $attach['file_name']; ?></a></li>
+                                    <?php } ?>
+                                    <?php } ?>
+                                </ul>
+                                <?php } ?>
+                                <!-- 其他附件 end -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 侧边栏 -->
+                <div class="col-sm-12 col-md-3 aw-side-bar hidden-sm hidden-xs">
+
+                    <!-- 推荐内容 -->
+                    <div class="aw-mod">
+                        <div class="mod-head">
+                            <h3><?php _e('商品信息'); ?></h3>
+                        </div>
+                        <div class="mod-body">
+                            <ul>
+                                <li>
+								金币：<span style="color:#ff6600"><?=$this->item_info['pointprice']?> 个</span>
+							</li>
+							<li>
+								人民币：<span style="color:#ff6600"><?=$this->item_info['rmbprice']?> 元</span>
+							</li>
+                            <li>
+								已售：<span style="color:#ff6600"><?=$this->item_info['sellnum']?> 件</span>
+							</li>
+                            <li>
+								剩余：<span style="color:#ff6600"><?=$this->item_info['stock']?> 件</span>
+							</li>
+                            <li>
+								浏览量：<span style="color:#ff6600"><?=$this->item_info['pageview']?> 次</span>
+							</li>
+							<li>
+								上架时间: <span style="color:#ff6600"><?=date_friendly($this->item_info['time'])?></span>
+							</li>
+                            <a class="btn btn-mini btn-primary" href="shop/buy/<?=$this->item_info['id']?>">购买</a>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end 推荐内容 -->
+                    
+                </div>
+                <!-- end 侧边栏 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

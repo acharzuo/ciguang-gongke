@@ -1,0 +1,29 @@
+<?php if ($this->log) { ?>
+<?php foreach ($this->log AS $key => $val) { ?>
+<tr>
+	<td><?=$val['type']?></td>
+    <td><?=$val['account']?></td>
+	<td><?=$val['num']?></td>
+    <td><?php echo date("Y-m-d H:i",$val['time']); ?></td>
+    <td>
+    	<p>
+        <?php if ($val['status'] == '1') { ?>
+            待审核
+         <?php } else if ($val['status'] == '2') { ?>
+            已通过 
+            <br/>
+            <?php echo date("Y-m-d H:i",$val['checktime']); ?>
+         <?php } else if ($val['status'] == '3') { ?>
+            已拒绝
+            <br/>
+            <?php echo date("Y-m-d H:i",$val['checktime']); ?>
+         <?php } ?>
+        </p>
+    </td>
+    <td><?=$val['checkinfo']?></td>
+    
+    
+    
+</tr>
+<?php } ?>
+<?php } ?>

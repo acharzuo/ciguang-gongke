@@ -1,0 +1,169 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-9 aw-main-content">
+                	<!-- 分类 -->
+                    <div class="aw-mod aw-topic-category">
+                        <div class="mod-body clearfix">
+                            <ul>
+                                <li>
+                                    <a <?php if(!$_GET['pid']) {?> class="active" <?php } ?> href="shop/">全部</a>
+                                </li>
+                                <?php foreach ($this->parent AS $key => $val) { ?>
+                                <li>
+                                    <a href="shop/pid-<?=$val['id']?>__catid-<?=$_GET['catid']?>" <?php if($_GET['pid'] == $val['id']) {?> class="active" <?php } ?> ><?php echo $val['name']; ?></a>
+                                </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                        
+                        <?php if($this->child) {?>
+                        <div class="mod-body clearfix" style="margin-top:-10px;">
+                            <ul>
+                                <li>
+                                     <a <?php if(!$_GET['catid']) {?> class="active" <?php } ?> href="shop/pid-<?=$_GET['pid']?>">全部</a>
+                                </li>
+                                <?php foreach ($this->child AS $key => $val) { ?>
+                                <li>
+                                    <a href="shop/pid-<?=$_GET['pid']?>__catid-<?=$val['id']?>" <?php if($_GET['catid'] == $val['id']) {?> class="active" <?php } ?> ><?php echo $val['name']; ?></a>
+                                </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                        <?php } ?>
+                    </div>
+                    <!-- end 分类 -->
+                    
+					<div class="aw-mod clearfix">
+						<div class="mod-body aw-feed-list clearfix">
+                        <!-- 商品列表 -->  
+                        <div style="height:10px;"></div>
+                        <div class="bs-example">
+                            <div class="row">
+                                <?php if ($this->item_list) { ?>
+                                <?php foreach ($this->item_list AS $key => $val) { ?> 
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="thumbnail">
+                                        <a href="shop/<?=$val['id']?>"><img style="height:140px;" src="<?='uploads/shop/'.$val['picurl']?>" alt="<?=$val['title']?>" title="<?=$val['title']?>"/></a>
+                                        <div class="caption">
+                                            <h3><a href="shop/<?php echo $val['id'];?>"><?php echo nl2br(strip_ubb(cjk_substr($val['title'], 0, 10, 'UTF-8', '...'))); ?></a></h3>
+                                            <p style="font-size:12px;">
+                                            <?php if($val['paytype'] == 1 || $val['paytype'] == 3) { ?>
+                                            <span class="item">金币：</span><span style="color:#ff6600;"><?=$val['pointprice'];?> 个</span> 
+                                            <?php } ?>
+                                            <?php if($val['paytype'] == 2 || $val['paytype'] == 3) { ?>
+                                            <span class="item">人民币：</span><span style="color:#ff6600;"><?=$val['rmbprice'];?> 元</span> 
+                                            <?php } ?> 
+                                            </p>
+                                            <p align="center"><a href="shop/buy/<?php echo $val['id'];?>" class="btn btn-success" role="button">立即购买</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                                <?php } ?>
+                            </div>
+                            <?php echo $this->pagination; ?>
+                        </div>
+				<!-- end 商品列表 -->
+                        </div>
+					</div>
+				</div>
+				<!-- 侧边栏 -->
+				<div class="col-sm-12 col-md-3 aw-side-bar hidden-xs hidden-sm">
+					<div class="aw-mod side-nav">
+                        <div class="mod-body">
+                            <ul>
+                                <?php if ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']) { ?>
+                                <li><a href="shop/publish/" target="_blank"><i class="icon icon-mytopic"></i>发布商品</a></li>
+                                <?php } ?>
+                                <li><a href="shop/order/" target="_blank"><i class="icon icon-favor"></i>我的订单</a></li>
+                                <li><a href="shop/address/" target="_blank"><i class="icon icon-home"></i>收货地址</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+					<!-- 热门商品 -->
+					<div class="aw-mod interest-user">
+                        <div class="mod-head"><h3>热门商品</h3></div>
+                        <div class="mod-body">
+                            <?php if ($this->hot_view_list) { ?>
+							<?php foreach ($this->hot_view_list AS $key => $val) { ?>
+                            <dl>
+                                <dt class="pull-left aw-border-radius-5">
+                                   <a href="shop/<?php echo $val['id'];?>"><img src="<?='uploads/shop/'.$val['picurl']?>" alt="<?php echo $val['title'];?>" title="<?php echo $val['title'];?>" /></a>
+                                </dt>
+                                <dd class="pull-left">
+                                    <span class="topic-tag">
+                                        <a href="shop/<?php echo $val['id'];?>"><?=$val['title']?></a>
+                                    </span>
+                                </dd>
+                            </dl>
+                            <div class="aw-mod-footer" style="font-size:12px;">
+                                <ul class="aw-text-color-999">
+                                    <li>
+                                        <span style="color:#ff6600;"><?=$val['pageview']?></span> 次浏览
+                                        <?php if($val['paytype'] == 1 || $val['paytype'] == 3) { ?>
+                                        &nbsp;
+                                        积分: <span style="color:#ff6600;"><?=$val['pointprice']?> 个</span>
+                                        <?php } ?>
+                                        <?php if($val['paytype'] == 2 || $val['paytype'] == 3) { ?>
+                                        &nbsp;
+                                        人民币: <span style="color:#ff6600;"><?=$val['rmbprice']?> 元</span>
+                                        <?php } ?>
+                                    </li>
+                                </ul>
+                            </div>    
+                            <?php } ?>
+                   			<?php } ?>
+                        </div>
+					</div>
+                    <!-- 热门商品 -->
+                    
+                    <!-- 热销商品 -->
+					<div class="aw-mod in销rest-user">
+                        <div class="mod-head"><h3>热销商品</h3></div>
+                        <div class="mod-body">
+                            <?php if ($this->hot_view_list) { ?>
+							<?php foreach ($this->hot_view_list AS $key => $val) { ?>
+                            <dl>
+                                <dt class="pull-left aw-border-radius-5">
+                                   <a href="shop/<?php echo $val['id'];?>"><img src="<?='uploads/shop/'.$val['picurl']?>" alt="<?php echo $val['title'];?>" title="<?php echo $val['title'];?>" /></a>
+                                </dt>
+                                <dd class="pull-left">
+                                    <span class="topic-tag">
+                                        <a href="shop/<?php echo $val['id'];?>"><?=$val['title']?></a>
+                                    </span>
+                                </dd>
+                            </dl>
+                            <div class="aw-mod-footer" style="font-size:12px;">
+                                <ul class="aw-text-color-999">
+                                    <li>
+                                        <span style="color:#ff6600;"><?=$val['sellnum']?></span> 次购买
+                                        <?php if($val['paytype'] == 1 || $val['paytype'] == 3) { ?>
+                                        &nbsp;
+                                        积分: <span style="color:#ff6600;"><?=$val['pointprice']?> 个</span>
+                                        <?php } ?>
+                                        <?php if($val['paytype'] == 2 || $val['paytype'] == 3) { ?>
+                                        &nbsp;
+                                        人民币: <span style="color:#ff6600;"><?=$val['rmbprice']?> 元</span>
+                                        <?php } ?>
+                                    </li>
+                                </ul>
+                            </div>    
+                            <?php } ?>
+                   			<?php } ?>
+                        </div>
+					</div>
+                    <!-- 热门商品 -->
+                    
+				</div>
+				<!-- end 侧边栏 -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

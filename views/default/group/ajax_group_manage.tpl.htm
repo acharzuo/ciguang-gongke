@@ -1,0 +1,26 @@
+<?php if ($this->log) { ?>
+<?php foreach ($this->log AS $key => $val) { ?>
+<tr>
+	<td><a class="aw-user-name" data-id="<?=$val['uid']; ?>" href="people/<?=urlencode($val['username'])?>" rel="nofollow"><img src="<?=get_avatar_url($val['uid'], 'max')?>" alt="" /> &nbsp;<?=$val['username']?></a></td>
+    <td><?php echo date("Y-m-d H:i:s",$val['jointime']); ?></td>
+	<td><?=$val['postnum']?> 篇</td>
+    <td><?=$val['replynum']?> 次</td>
+    <td>
+    	<p>
+        <?php if ($val['status'] == '1') { ?>
+          已审核
+          <?php if ($val['uid'] != $this->user_info['uid']) { ?>
+          
+          <a class="btn btn-mini btn-danger" href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除该成员吗?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/group/ajax/kick_people/groupid-<?=$val['groupid']?>__uid-<?=$val['uid']?>');});"><?php _e('删除'); ?></a>
+          <?php } ?>
+        <?php } else if ($val['status'] == '0') { ?>
+          待审核
+          <a class="btn btn-mini btn-success" href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认通过审核吗?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/group/ajax/check_people/groupid-<?=$val['groupid']?>__uid-<?=$val['uid']?>');});"><?php _e('通过'); ?></a>
+          
+          <a class="btn btn-mini btn-danger" href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除该成员吗?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/group/ajax/kick_people/groupid-<?=$val['groupid']?>__uid-<?=$val['uid']?>');});"><?php _e('删除'); ?></a>
+        <?php } ?>
+        </p>
+    </td>
+</tr>
+<?php } ?>
+<?php } ?>

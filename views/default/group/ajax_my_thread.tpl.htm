@@ -1,0 +1,11 @@
+<?php if ($this->log) { ?>
+<?php foreach ($this->log AS $key => $val) { ?>
+<tr>
+	<td><a href="group/thread/<?=$val['threadid']?>" target="_blank"><?=$val['title']?></a></td>
+    <td><a href="group/<?=$val['groupid']?>" target="_blank"><?=$val['groupname']?></a></td>
+	<td><?=$val['pageview']?> 次</td>
+    <td><?=$val['commentnum']?> 次</td>
+    <td><?php echo date("Y-m-d H:i",$val['time']); ?></td>
+</tr>
+<?php } ?>
+<?php } ?>

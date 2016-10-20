@@ -1,0 +1,52 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-user-setting">
+					<div class="tabbable">
+						<ul class="nav nav-tabs aw-nav-tabs active">
+							 <li><a href="group/create/"><?php _e('创建群组'); ?></a></li>
+                    		 <li class="active"><a href="group/group_manage/"><?php _e('成员管理'); ?></a></li>
+							 <h2>群组管理</h2>
+						</ul>
+					</div>					
+					<div class="tab-content clearfix">
+
+<div class="aw-mod aw-user-setting-points">
+
+	<div class="aw-mod-body">
+		<table class="table table-hover">
+			<thead>
+				<tr class="info">
+					<th width="100">用户名</th> 
+                    <th width="100">加入时间</th> 
+                    <th width="100">发帖数</th> 
+                    <th width="100">回复数</th> 
+                    <th width="100">状态</th>
+				</tr>
+			</thead>
+            <tbody id="contents_log">
+            </tbody>
+	    </table>
+	    <!-- 加载更多内容 -->
+		<a class="aw-load-more-content" id="log_more">
+			<span><?php _e('更多'); ?>...</span>
+		</a>
+		<!-- end 加载更多内容 -->
+	</div>
+</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		AWS.load_list_view(G_BASE_URL + '/group/ajax/group_manage/groupid-<?=$this->groupid?>', $('#log_more'), $('#contents_log'));
+	});
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>
