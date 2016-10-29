@@ -25,7 +25,11 @@ class main extends AWS_CONTROLLER
 	public function get_access_rule()
 	{
 		$rule_action['rule_type'] = 'black';
-		$rule_action['actions'] = array();
+		$rule_action['actions'] = [
+			'lessonadd',
+			'lessonlist',
+			'lessonedit'
+		];
 
 		return $rule_action;
 	}
@@ -635,7 +639,7 @@ class main extends AWS_CONTROLLER
 		TPL::output('m/find_password_modify');
 	}
 
-	public function index_action()
+	public function indexOld_action()
 	{
 		if (!$this->user_id AND !$this->user_info['permission']['visit_explore'])
 		{
@@ -1236,4 +1240,72 @@ class main extends AWS_CONTROLLER
 
 		TPL::output('m/favorite');
 	}
+
+	public function index_action()
+	{
+		$this->crumb(AWS_APP::lang()->_t('24小时功课榜'), '/m/lessons/');
+		$lessons = $this->model('lessons')->lessonOf24Hours();
+		TPL::assign('lessons', $lessons);
+		TPL::output('m/24hours.tpl.htm');
+	}
+
+	public function lessonadd_action()
+	{
+		$this->crumb(AWS_APP::lang()->_t('24小时功课榜'), '/m/lessons/');
+		$date = date('Ymd', time());
+		$lesson = $this->model('lessons')->get_detail($this->user_id, $date);
+
+		if (empty($lesson)) {
+			$lessonMd = array(
+				'date' => date('Y-m-d', time()),
+				'songjing' => 0,
+				'chanhui' => 0,
+				'nianfo' => 0,
+				'yuezangjing' => "",
+				'yuezangpin' => 0,
+			);
+		} else {
+			$lesson = current($lesson);
+			$lessonMd = array(
+				'date' => date('Y-m-d', time()),
+				'songjing' => $lesson['songjing'],
+				'chanhui' => $lesson['chanhui'],
+				'nianfo' => $lesson['nianfo'],
+				'yuezangjing' => $lesson['yuezangjing'],
+				'yuezangpin' => $lesson['yuezangpin'],
+			);
+		}
+
+		TPL::assign('lesson', $lessonMd);
+		TPL::output('m/lessonadd.tpl.htm');
+	}
+
+	/**
+	 * 我的功课列表页面
+	 */
+	public function lessonlist_action()
+	{
+		$lessons = $this->model('lessons')->lessons_list($this->user_id, 1);
+
+		TPL::assign('lessons', $lessons);
+		TPL::output('m/lessonlist');
+
+	}
+
+
+	/**
+	 * 功课编辑课程
+	 */
+	public function lessonedit_action()
+	{
+		$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+		$uid = (int) $this->user_id;
+
+		$lesson = $this->model('lessons')->get($uid, $id);
+		$lesson = current($lesson);
+
+		TPL::assign('lesson', $lesson);
+		TPL::output('m/lessonedit');
+	}
+
 }

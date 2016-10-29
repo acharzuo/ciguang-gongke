@@ -98,9 +98,15 @@ class main extends AWS_CONTROLLER
     public function index_action()
     {
 
-        $lessons = $this->model('lessons')->lessonOf24Hours();
-        TPL::assign('lessons', $lessons);
-        TPL::output('lessons/index');
+        if(is_mobile()){
+            HTTP::redirect("/m/");
+        } else {
+            $lessons = $this->model('lessons')->lessonOf24Hours();
+            TPL::assign('lessons', $lessons);
+            TPL::output('lessons/index');
+        }
+
+
     }
 
     public function statistic_action()
