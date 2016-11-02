@@ -72,6 +72,10 @@ class main extends AWS_CONTROLLER
             );
         }
 
+        TPL::import_js(array(
+            'js/laydate/laydate.js'
+        ));
+
         TPL::assign('lesson', $lessonMd);
         TPL::output('lessons/add');
     }
@@ -86,6 +90,10 @@ class main extends AWS_CONTROLLER
 
         $lesson = $this->model('lessons')->get($uid, $id);
         $lesson = current($lesson);
+
+        TPL::import_js(array(
+            'js/laydate/laydate.js'
+        ));
 
         TPL::assign('lesson', $lesson);
         TPL::output('lessons/edit');

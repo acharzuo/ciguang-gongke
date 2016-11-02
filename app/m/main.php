@@ -22,14 +22,15 @@ define('IN_MOBILE', true);
 
 class main extends AWS_CONTROLLER
 {
+
 	public function get_access_rule()
 	{
 		$rule_action['rule_type'] = 'black';
-		$rule_action['actions'] = [
+		$rule_action['actions'] = array(
 			'lessonadd',
 			'lessonlist',
 			'lessonedit'
-		];
+		);
 
 		return $rule_action;
 	}

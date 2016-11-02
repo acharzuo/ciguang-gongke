@@ -15,7 +15,7 @@
                             <form id="lessons_edit_form" method="post" action="lessons/ajax/edit_lessons/" onsubmit="return false" accept-charset="UTF-8">
                                 <div class="content mod-double">
                                     <input type="hidden" name="id" value="<?=$this->lesson['id']?>">
-                                    日期:<input readonly class="form-control mod-data date-start" value="<?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?>" type="text" name="date" placeholder="<?php _e('时间'); ?>..." /><br />
+                                    日期:<input readonly class="form-control mod-data date-start" onclick="laydate()" value="<?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?>" type="text" name="date" placeholder="<?php _e('时间'); ?>..." /><br />
 
                                     诵经<input class="form-control" type="text" value="<?=$this->lesson['songjing']?>" name="songjing" placeholder="<?php _e('诵经次数'); ?>..." /><br />
                                     拜忏<input class="form-control" type="text" value="<?=$this->lesson['chanhui']?>" name="chanhui" placeholder="<?php _e('忏悔次数'); ?>..." /><br />

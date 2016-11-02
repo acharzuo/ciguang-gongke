@@ -15,7 +15,7 @@
                         <div class="mod-body">
                             <form id="lessons_add_form" method="post" action="lessons/ajax/add_lessons/" onsubmit="return false" accept-charset="UTF-8">
                                 <div class="content mod-double">
-                                    <div>日期:</div><input class="form-control mod-data" value="<?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?>" type="text" name="date" placeholder="<?php _e('时间'); ?>..." /><br />
+                                    <div>日期:</div><input class="form-control mod-data" value="<?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?>" type="date" name="date" placeholder="<?php _e('时间'); ?>..." /><br />
                                     诵经(部):<input class="form-control" type="text" value="<?=$this->lesson['songjing']? $this->lesson['songjing']:'' ?>" name="songjing" placeholder="<?php _e('诵经次数'); ?>..." /><br />
                                     拜忏(忏):<input class="form-control" type="text" value="<?=$this->lesson['chanhui']? $this->lesson['chanhui']:'' ?>" name="chanhui" placeholder="<?php _e('忏悔次数'); ?>..." /><br />
                                     念佛(声):<input class="form-control" type="text" value="<?=$this->lesson['nianfo']? $this->lesson['nianfo']:'' ?>" name="nianfo" placeholder="<?php _e('念佛次数'); ?>..." /><br />

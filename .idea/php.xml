@@ -5,6 +5,7 @@
       <server host="qa.dizang7.cn" id="3138cbfc-1eef-449a-b0f2-bb11732c6761" name="qa.dizangy.cn" use_path_mappings="true">
         <path_mappings>
           <mapping local-root="$PROJECT_DIR$/plugin" remote-root="/" />
+          <mapping local-root="$USER_HOME$/wecenter" remote-root="/Users/achar/WebRoot" />
         </path_mappings>
       </server>
     </servers>

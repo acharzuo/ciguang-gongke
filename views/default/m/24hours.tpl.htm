@@ -32,7 +32,7 @@
                                     <td><?=$lesson['songjing']?></td>
                                     <td><?=$lesson['chanhui']?></td>
                                     <td><?=$lesson['nianfo']?></td>
-                                    <td><?=$lesson['yuezangjingshu'] . ":" . $lesson['yuezangpinshu'] ?></td>
+                                    <td><?php if ( $lesson['yuezangjingshu'] ) { echo $lesson['yuezangjingshu'] . ":" . $lesson['yuezangpinshu']; } ?></td>
                                 </tr>
                                 <?php } ?>
                                 </tbody>
