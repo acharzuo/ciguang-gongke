@@ -25,7 +25,8 @@ class main extends AWS_CONTROLLER
 
         // 这个里面的不用登陆
         $rule_action['actions'] =  array(
-                                    'index'
+                                    'index',
+            'actionsday'
                                     );
         return $rule_action;
     }
@@ -116,6 +117,59 @@ class main extends AWS_CONTROLLER
 
 
     }
+
+    public function actionsday_action(){
+        $lessons = $this->model('lessons')->actionsday();
+        $data = array();
+        foreach ($lessons as $k => $val) {
+            if (!isset($lessons[$k - 1])) {
+                $data[] = array(
+                    'songjing' => $val['songjing'],
+                    'chanhui' => $val['chanhui'],
+                    'nianfo' => $val['nianfo'],
+                    'date' => strtotime($val['date']) * 1000,
+                );
+            } else {
+                $data[] = array(
+                    'songjing' => $val['songjing'] + $data[$k - 1]['songjing'],
+                    'chanhui' => $val['chanhui'] + $data[$k - 1]['chanhui'],
+                    'nianfo' => $val['nianfo'] + $data[$k - 1]['nianfo'],
+                    'date' => strtotime($val['date']) * 1000,
+                );
+            }
+
+        }
+        TPL::assign('lessons', json_encode($data));
+
+
+        $mylessons = $this->model('lessons')->getAll($this->user_id);
+        $mydata = array();
+        foreach ($mylessons as $k => $val) {
+            if (!isset($lessons[$k - 1])) {
+                $mydata[] = array(
+                    'songjing' => $val['songjing'],
+                    'chanhui' => $val['chanhui'],
+                    'nianfo' => $val['nianfo'],
+                    'date' => strtotime($val['date']) * 1000,
+                );
+            } else {
+                $mydata[] = array(
+                    'songjing' => $val['songjing'] + $mydata[$k - 1]['songjing'],
+                    'chanhui' => $val['chanhui'] + $mydata[$k - 1]['chanhui'],
+                    'nianfo' => $val['nianfo'] + $mydata[$k - 1]['nianfo'],
+                    'date' => strtotime($val['date']) * 1000,
+                );
+            }
+
+        }
+        TPL::assign('mylessons', json_encode($mydata));
+
+        TPL::output('lessons/actionsday');
+
+    }
+
+
+
 
     public function statistic_action()
     {

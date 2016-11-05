@@ -92,6 +92,69 @@ class lessons_class extends AWS_MODEL
         return $this->update($this->_table_name, $lessons, 'uid=' . $uid . ' AND date=' . $date);
     }
 
+
+    /**
+     * 一个活动时的汇总
+     * @param int $beginDate
+     * @param int $lastDate
+     */
+    public function  actionsum($beginDate = 0 , $lastDate = 0){
+
+        $sql = "select ";
+        $sql .= " sum(songjing) songjing, sum(chanhui) chanhui, sum(nianfo)/1000 nianfo ";
+        $sql .= " from " . $this->prefix . $this->_table_name ;
+        $where = " 1 = 1 ";
+        if ($beginDate) {
+            $where .= " and date >= " . $beginDate;
+        }
+        if ($lastDate) {
+            $where .= " and date <= " . $lastDate;
+        }
+
+        if (AWS_APP::config()->get('system')->debug)
+        {
+            AWS_APP::debug_log('活动汇总SQL:', $sql);
+            AWS_APP::debug_log('活动汇总Where:', $where);
+
+        }
+
+        $res = $this->query_all($sql, null, null ,$where);
+
+        return $res;
+
+    }
+
+    /**
+     * 一个活动时的汇总
+     * @param int $beginDate
+     * @param int $lastDate
+     */
+    public function  actionsday($beginDate = 0 , $lastDate = 0){
+
+        $sql = "select ";
+        $sql .= " date, sum(songjing) songjing, sum(chanhui) chanhui, sum(nianfo)/1000 nianfo ";
+        $sql .= " from " . $this->prefix . $this->_table_name ;
+        $where = " 1 = 1 ";
+        if ($beginDate) {
+            $where .= " and date >= " . $beginDate;
+        }
+        if ($lastDate) {
+            $where .= " and date <= " . $lastDate;
+        }
+
+        if (AWS_APP::config()->get('system')->debug)
+        {
+            AWS_APP::debug_log('活动汇总SQL:', $sql);
+            AWS_APP::debug_log('活动汇总Where:', $where);
+
+        }
+
+        $res = $this->query_all($sql,  null, null ,$where, "date");
+
+        return $res;
+
+    }
+
     /**
      * 获取功课的列表
      *
