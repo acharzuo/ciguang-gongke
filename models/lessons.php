@@ -131,25 +131,40 @@ class lessons_class extends AWS_MODEL
      */
     public function  actionsday($beginDate = 0 , $lastDate = 0){
 
-        $sql = "select ";
-        $sql .= " date, sum(songjing) songjing, sum(chanhui) chanhui, sum(nianfo)/1000 nianfo ";
-        $sql .= " from " . $this->prefix . $this->_table_name ;
-        $where = " 1 = 1 ";
+
+        $sql = " SELECT ";
+        $sql .= " cdate                    date, ";
+        $sql .= " sum(songjing)            songjing, ";
+        $sql .= " sum(chanhui)             chanhui, ";
+        $sql .= " ceil(sum(nianfo) / 1000) nianfo ";
+        $sql .= " FROM ( ";
+        $sql .= " SELECT ";
+        $sql .= "  date(create_time) AS cdate, ";
+        $sql .= "  " . $this->prefix . $this->_table_name . ".* ";
+        $sql .= " FROM " . $this->prefix . $this->_table_name  ;
+
+        $sql .= " WHERE 1 = 1 ";
         if ($beginDate) {
-            $where .= " and date >= " . $beginDate;
+            $sql .= " and create_time >= '" . $beginDate . " 00:00:00'";
         }
         if ($lastDate) {
-            $where .= " and date <= " . $lastDate;
+            $sql .= " and create_time <= '" . $lastDate . " 23:59:59'";
         }
+
+
+        $sql .= " ) a ";
+        $sql .= " GROUP BY cdate ";
+
+
+
 
         if (AWS_APP::config()->get('system')->debug)
         {
             AWS_APP::debug_log('活动汇总SQL:', $sql);
-            AWS_APP::debug_log('活动汇总Where:', $where);
 
         }
 
-        $res = $this->query_all($sql,  null, null ,$where, "date");
+        $res = $this->query_all($sql);
 
         return $res;
 
@@ -172,7 +187,7 @@ class lessons_class extends AWS_MODEL
     public function lessonOf24Hours()
     {
         $date = date('Y-m-d H:i:s', strtotime('-1 day'));
-        $res = $this->fetch_all($this->_table_name, null , null,  500);   // 查询最新的500条记录
+        $res = $this->fetch_all($this->_table_name, null , "create_time desc",  500);   // 查询最新的500条记录
 //        $result = array();
 
         $uids = array();

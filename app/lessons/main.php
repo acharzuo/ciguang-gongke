@@ -119,7 +119,7 @@ class main extends AWS_CONTROLLER
     }
 
     public function actionsday_action(){
-        $lessons = $this->model('lessons')->actionsday();
+        $lessons = $this->model('lessons')->actionsday("2016-11-05","2017-12-31");
         $data = array();
         foreach ($lessons as $k => $val) {
             if (!isset($lessons[$k - 1])) {

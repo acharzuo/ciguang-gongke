@@ -18,6 +18,7 @@
                                 <thead>
                                 <tr>
                                     <th>姓名</th>
+                                    <th>日期</th>
                                     <th>诵经</th>
                                     <th>忏悔</th>
                                     <th>念佛</th>
@@ -28,6 +29,7 @@
                                 <?php foreach ($this->lessons as $k => $lesson) { ?>
                                 <tr>
                                     <td><?=$lesson['user_name']?></td>
+                                    <td><?=$lesson['date']?></td>
                                     <td><?=$lesson['songjing']?></td>
                                     <td><?=$lesson['chanhui']?></td>
                                     <td><?=$lesson['nianfo']?></td>
