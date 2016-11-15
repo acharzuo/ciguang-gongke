@@ -2,6 +2,12 @@
 
 <style>
 
+    .msgtip {
+        display: inline-flex;
+        color: #d0d0d0;
+        margin: 0 10px 0 2px;
+
+    }
 
    
 </style>
@@ -18,32 +24,44 @@
                                 <a href="lessons/add/" class="pull-right btn btn-mini btn-success">我要报功课</a>
                             </h2>
                         </div>
-                        <div class="mod-body aw-side-bar">
-                            <table class="table">
-                                <thead class="fixedThead">
-                                    <tr>
-                                        <th>姓名</th>
-                                        <th>日期</th>
-                                        <th>诵经</th>
-                                        <th>忏悔</th>
-                                        <th>念佛</th>
-                                        <th>阅藏</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="scrollTbody">
-                                <?php foreach ($this->lessons as $k => $lesson) { ?>
-                                    <tr>
-                                        <td><?=$lesson['user_name']?></td>
-                                        <td><?php echo $lesson['create_time']; ?></td>
-                                        <td><?=$lesson['songjing']?></td>
-                                        <td><?=$lesson['chanhui']?></td>
-                                        <td><?=$lesson['nianfo']?></td>
-                                        <td><?=$lesson['yuezangjing'] . ":" . $lesson['yuezangpin']?></td>
-                                    </tr>
-                                <?php } ?>
-                                </tbody>
-                            </table>
+                        <div class="mod-body aw-feed-list">
+                            <?php foreach ($this->lessons as $k => $val) { ?>
 
+                            <div class="aw-item" id="answer_list_<?php echo $val['id']; ?>">
+                                <div class="mod-head aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>">
+                                    <a class="aw-user-img aw-border-radius-5" href="people/<?php echo $val['user_info']['url_token']; ?>">
+                                        <img src="<?php echo get_avatar_url($val['uid'], 'mid'); ?>" alt="<?php echo $val['user_info']['user_name']; ?>" />
+                                    </a>
+                                    <p>
+                                        <a  href="people/<?php echo $val['user_info']['url_token']; ?>"><?php echo $val['user_info']['user_name']; ?></a><?php if ($val['at_user_info']) { ?> <?php _e('回复'); ?> <a href="people/<?php echo $val['at_user_info']['url_token']; ?>"><?php echo $val['at_user_info']['user_name']; ?></a><?php } ?>
+                                         在<?php echo preg_replace('#(\d{4})(\d{2})(\d{2})#', '$2月$3日', $val['date']) ?>的功课
+                                        <?php if ( $this->user_info['uid'] == $val['user_info']['uid']) { ?> [<a href="lessons/edit/?id=<?=$val['id'] ?>"> 编辑 </a> ] <?php } ?>
+                                    </p>
+                                </div>
+                                <div class="mod-body">
+                                    <div class="markitup-box">
+                                        <div class="msgtip">诵经: </div><?=$val['songjing']?><div class="msgtip">部</div>
+                                        <div class="msgtip">拜忏: </div><?=$val['chanhui']?><div class="msgtip">忏</div>
+                                        <div class="msgtip">念佛: </div><?php if ($val['nianfoshichang']) { ?><?=$val['nianfoshichang']?><div class="msgtip">分钟</div><?php } else { ?><?=$val['nianfo']?><div class="msgtip">声</div><?php } ?>
+                                        <?php if ($val['yuezangpin']) { ?>
+                                        <div class="msgtip">阅藏: </div><?=$val['yuezangjing'] . "<div class='msgtip'>第 </div>" . $val['yuezangpin']?><div class="msgtip">品</div>
+                                        <?php } ?>
+                                        <?php if ($val['dizangchan']) { ?>
+                                        <div class="msgtip">地藏禅: </div><?=$val['dizangchan'] ?><div class='msgtip'>分钟</div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="mod-footer">
+                                    <div class="meta">
+                                        <span class="pull-right text-color-999"><?php echo date_friendly($val['add_time']); ?></span>
+                                        <?php if ($this->user_id) { ?>
+                                        <a class="text-color-999 <?php if ($val['vote_info']['rating'] == 1) { ?> active<?php } ?>" onclick="AWS.User.lessons_vote($(this), <?php echo $val['id']; ?>, 1)"><i class="icon icon-agree"></i> <?php echo $val['votes']; ?> <?php if ($val['vote_info']['rating'] == 1) { ?><?php _e('我已赞'); ?><?php } else { ?><?php _e('赞'); ?><?php } ?></a>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <?php } ?>
                         </div>
 
                     </div>

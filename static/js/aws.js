@@ -1895,6 +1895,39 @@ AWS.User =
 		}, 'json');
 	},
 
+
+	// 功课赞叹
+	lessons_vote: function(selector,lesson_id, rating){
+		AWS.loading('show');
+
+		if (selector.hasClass('active'))
+		{
+			var rating = 0;
+		}
+
+		$.post(G_BASE_URL + '/lessons/ajax/lessons_vote/', 'type=lessons&item_id=' + lesson_id + '&rating=' + rating, function (result)
+		{
+			AWS.loading('hide');
+
+			if (result.errno != 1)
+			{
+				AWS.alert(result.err);
+			}
+			else
+			{
+				if (rating == 0)
+				{
+					selector.html(selector.html().replace(_t('我已赞'), _t('赞'))).removeClass('active');
+				}
+				else
+				{
+					selector.html(selector.html().replace(_t('赞'), _t('我已赞'))).addClass('active');
+				}
+			}
+		}, 'json');
+	},
+
+
 	// 文章评论赞同
 	article_comment_vote: function(selector, comment_id, rating)
 	{

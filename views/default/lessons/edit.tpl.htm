@@ -7,21 +7,24 @@
                 <div class="col-sm-12 col-md-9 aw-main-content">
                     <div class="aw-mod aw-mod-invite-friend">
                         <div class="mod-head common-head">
-                            <h2><?php echo $this->user_info['user_name'] ?><?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?><?php _e('的功课修改'); ?>
+                            <h2><?php echo $this->user_info['user_name'] ?>在<?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?><?php _e('的功课 修改'); ?>
                                 <a href="lessons/list/" class="pull-right btn btn-mini btn-success">我的功课列表</a>
                             </h2>
                         </div>
                         <div class="mod-body">
-                            <form id="lessons_edit_form" method="post" action="lessons/ajax/edit_lessons/" onsubmit="return false" accept-charset="UTF-8">
+                            <form id="lessons_edit_form" method="post" action="lessons/ajax/edit/" onsubmit="return false" accept-charset="UTF-8">
                                 <div class="content mod-double">
                                     <input type="hidden" name="id" value="<?=$this->lesson['id']?>">
-                                    日期:<input readonly class="form-control mod-data date-start" onclick="laydate()" value="<?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?>" type="text" name="date" placeholder="<?php _e('时间'); ?>..." /><br />
+                                    功课日期:<input readonly class="form-control mod-data date-start" value="<?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?>" type="text" name="date" placeholder="<?php _e('时间'); ?>..." /><br />
 
-                                    诵经<input class="form-control" type="text" value="<?=$this->lesson['songjing']?>" name="songjing" placeholder="<?php _e('诵经次数'); ?>..." /><br />
-                                    拜忏<input class="form-control" type="text" value="<?=$this->lesson['chanhui']?>" name="chanhui" placeholder="<?php _e('忏悔次数'); ?>..." /><br />
-                                    念佛<input class="form-control" type="text" value="<?=$this->lesson['nianfo']?>" name="nianfo" placeholder="<?php _e('念佛次数'); ?>..." /><br />
-                                    阅藏(品/卷/章)<input class="form-control" type="text" value="<?=$this->lesson['yuezangjing']?>" name="yuezangjing" placeholder="<?php _e('经书名称'); ?>..." />
-                                    <input class="form-control" type="text" value="<?=$this->lesson['yuezangpin']?>" name="yuezangpin" placeholder="<?php _e('诵读几品'); ?>..." />
+                                    诵经(部):<input class="form-control" type="text" value="<?=$this->lesson['songjing']? $this->lesson['songjing']:'' ?>" name="songjing" placeholder="<?php _e('诵经次数'); ?>..." /><br />
+                                    拜忏(忏):<input class="form-control" type="text" value="<?=$this->lesson['chanhui']? $this->lesson['chanhui']:'' ?>" name="chanhui" placeholder="<?php _e('忏悔次数'); ?>..." /><br />
+                                    念佛(声):<input class="form-control" type="text" value="<?=$this->lesson['nianfo']? $this->lesson['nianfo']:'' ?>" name="nianfo" placeholder="<?php _e('念佛次数'); ?>..." /><br />
+                                    念佛(分钟):<br/>【念佛(分钟数)与念佛(声)选填一种即可,二者均填时,以念佛(分钟数)为准】:<input class="form-control" type="text" value="<?=$this->lesson['nianfoshichang']? $this->lesson['nianfoshichang']:'' ?>" name="nianfoshichang" placeholder="<?php _e('念佛多少分钟'); ?>..." /><br />
+                                    阅藏(品):<input class="form-control" type="text" value="<?=$this->lesson['yuezangjing']? $this->lesson['yuezangjing']:'' ?>" name="yuezangjing" placeholder="<?php _e('阅读经书名称'); ?>..." />
+                                    <input class="form-control" type="text" value="<?=$this->lesson['yuezangpin']? $this->lesson['yuezangpin']:'' ?>" name="yuezangpin" placeholder="<?php _e('品数'); ?>..." />
+                                    地藏禅(分钟):<input class="form-control" type="text" value="<?=$this->lesson['dizangchan']? $this->lesson['dizangchan']:'' ?>" name="dizangchan" placeholder="<?php _e('地藏忏次数'); ?>..." /><br />
+                                    <br />
 
                                     <br />
                                     <p>

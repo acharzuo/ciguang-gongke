@@ -24,7 +24,7 @@
                                         date,
                                         _;
                                 for (var i in lessons) {
-                                    date = new Date("m-d", lessons[i]['date']);
+                                    date = new Date(lessons[i]['date']);
                                     _ = {
                                         name: date.toString(),
                                         value: [
@@ -68,12 +68,14 @@
                                     },
                                     tooltip: {
                                         show : true,
-                                        trigger: 'axis',
-                                        formatter: function (params) {
-                                            params = params[0];
-                                            var date = new Date(params.name);
-                                            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
-                                        },
+                                        trigger: 'item',
+                                        formatter: '{a}:{c}',
+// function (params) {
+//                                            params = params[0];
+//
+//                                            var date = new Date(params.name);
+//                                            return date.getMonth() + '月' + (date.getDate() + 1) + '日'  + '  ' + params.seriesName + ":"  + params.value[1];
+//                                        },
                                         axisPointer: {
                                             animation: false
                                         }

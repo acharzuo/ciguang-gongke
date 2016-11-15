@@ -26,7 +26,7 @@ class main extends AWS_CONTROLLER
         // 这个里面的不用登陆
         $rule_action['actions'] =  array(
                                     'index',
-            'actionsday'
+                                    'actionsday'
                                     );
         return $rule_action;
     }
@@ -58,8 +58,10 @@ class main extends AWS_CONTROLLER
                 'songjing' => 0,
                 'chanhui' => 0,
                 'nianfo' => 0,
+                'dizangchan' => 0,
+                'nianfoshichang' => 0,
                 'yuezangjing' => "",
-                'yuezangpin' => 0,
+                'yuezangpin' => 0
             );
         } else {
             $lesson = current($lesson);
@@ -67,7 +69,9 @@ class main extends AWS_CONTROLLER
                 'date' => date('Y-m-d', time()),
                 'songjing' => $lesson['songjing'],
                 'chanhui' => $lesson['chanhui'],
+                'dizangchan' => $lesson['dizangchan'],
                 'nianfo' => $lesson['nianfo'],
+                'nianfoshichang' => $lesson['nianfoshichang'],
                 'yuezangjing' => $lesson['yuezangjing'],
                 'yuezangpin' => $lesson['yuezangpin'],
             );
@@ -84,7 +88,7 @@ class main extends AWS_CONTROLLER
     /**
      * 功课编辑课程
      */
-    public function edit_lesson_action()
+    public function edit_action()
     {
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
         $uid = (int) $this->user_id;
@@ -109,17 +113,24 @@ class main extends AWS_CONTROLLER
 
         if(is_mobile()){
             HTTP::redirect("/m/");
-        } else {
-            $lessons = $this->model('lessons')->lessonOf24Hours();
-            TPL::assign('lessons', $lessons);
-            TPL::output('lessons/index');
+            return;
         }
+
+
+        $lessons = $this->model('lessons')->index($this->user_id);
+
+        TPL::assign('lessons', $lessons);
+        TPL::output('lessons/index');
+
 
 
     }
 
+    /**
+     * 活动的汇总
+     */
     public function actionsday_action(){
-        $lessons = $this->model('lessons')->actionsday("2016-11-05","2017-12-31");
+        $lessons = $this->model('lessons')->actionsday(20161105,20171231);
         $data = array();
         foreach ($lessons as $k => $val) {
             if (!isset($lessons[$k - 1])) {

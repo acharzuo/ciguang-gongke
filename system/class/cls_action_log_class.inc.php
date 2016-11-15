@@ -22,6 +22,8 @@ class ACTION_LOG
 
 	const CATEGORY_TOPIC = 4;	// 话题
 
+	const CATEGORY_LESSON = 5; // 功课
+
 
 	const ADD_QUESTION = 101;	// 添加问题
 
@@ -72,6 +74,15 @@ class ACTION_LOG
 	const ADD_LIKE_PROJECT = 701;	// 喜欢活动
 
 	const ADD_SUPPORT_PROJECT = 702;	// 参加活动
+
+
+	const ADD_LESSON = 801; 	// 增加功课
+
+	const MODIFY_LESSON = 802; 	// 修改功课
+
+	const ADD_LESSON_VOTE = 805; // 功课被点赞
+
+	const DELETE_LESSON_VOTE = 806; 	// 功课被取消点赞
 
 	public static function associate_fresh_action($history_id, $associate_id, $associate_type, $associate_action, $uid, $anonymous, $add_time)
 	{

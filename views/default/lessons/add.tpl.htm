@@ -15,13 +15,17 @@
                         <div class="mod-body">
                             <form id="lessons_add_form" method="post" action="lessons/ajax/add_lessons/" onsubmit="return false" accept-charset="UTF-8">
                                 <div class="content mod-double">
-                                    <div>日期:</div><input class="form-control mod-data" onclick="laydate()" value="<?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?>" type="text" name="date" placeholder="<?php _e('时间'); ?>..." /><br />
+
+                                    功课日期:<input class="form-control mod-data" onclick="laydate()" value="<?=preg_replace('#(\d{4})(\d{2})(\d{2})#', '$1-$2-$3', $this->lesson['date'])?>" type="text" name="date" placeholder="<?php _e('时间'); ?>..." /><br />
                                     诵经(部):<input class="form-control" type="text" value="<?=$this->lesson['songjing']? $this->lesson['songjing']:'' ?>" name="songjing" placeholder="<?php _e('诵经次数'); ?>..." /><br />
                                     拜忏(忏):<input class="form-control" type="text" value="<?=$this->lesson['chanhui']? $this->lesson['chanhui']:'' ?>" name="chanhui" placeholder="<?php _e('忏悔次数'); ?>..." /><br />
                                     念佛(声):<input class="form-control" type="text" value="<?=$this->lesson['nianfo']? $this->lesson['nianfo']:'' ?>" name="nianfo" placeholder="<?php _e('念佛次数'); ?>..." /><br />
+                                    念佛(分钟):<br/>【念佛(分钟数)与念佛(声)选填一种即可,二者均填时,以念佛(分钟数)为准】:<input class="form-control" type="text" value="<?=$this->lesson['nianfoshichang']? $this->lesson['nianfoshichang']:'' ?>" name="nianfoshichang" placeholder="<?php _e('念佛多少分钟'); ?>..." /><br />
                                     阅藏(品):<input class="form-control" type="text" value="<?=$this->lesson['yuezangjing']? $this->lesson['yuezangjing']:'' ?>" name="yuezangjing" placeholder="<?php _e('阅读经书名称'); ?>..." />
                                     <input class="form-control" type="text" value="<?=$this->lesson['yuezangpin']? $this->lesson['yuezangpin']:'' ?>" name="yuezangpin" placeholder="<?php _e('品数'); ?>..." />
+                                    地藏禅(分钟):<input class="form-control" type="text" value="<?=$this->lesson['dizangchan']? $this->lesson['dizangchan']:'' ?>" name="dizangchan" placeholder="<?php _e('地藏忏次数'); ?>..." /><br />
                                     <br />
+
                                     <p>
                                         <a class="pull-right btn btn-mini btn-success" onclick="reset();"><?php _e('清空'); ?></a>
                                         <a class="pull-right btn btn-mini btn-success" onclick="AWS.ajax_post($('#lessons_add_form')); return false;"><?php _e('保存'); ?></a>

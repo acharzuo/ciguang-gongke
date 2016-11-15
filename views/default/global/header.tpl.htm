@@ -38,10 +38,10 @@
 				<nav role="navigation" class="collapse navbar-collapse bs-navbar-collapse">
 				  <ul class="nav navbar-nav">
 
-					<li><a href="lessons/" <?php if ($_GET['app'] == 'home') { ?> class="active"<?php } ?>><i class="icon icon-home"></i> <?php _e('功课榜'); ?></a></li>
-					<li><a href="lessons/actionsday/" <?php if ($_GET['app'] == 'actions') { ?> class="active"<?php } ?>><i class="icon icon-home"></i> <?php _e('金鸡报晓功课'); ?></a></li>
+					<li><a href="lessons/" <?php if ($_GET['app'] == 'lessons' && $_GET['act'] == 'index' ) { ?> class="active"<?php } ?>><i class="icon icon-home"></i> <?php _e('功课榜'); ?></a></li>
+					<li><a href="lessons/actionsday/" <?php if ($_GET['app'] == 'lessons' && $_GET['act'] == 'actionsday' ) { ?> class="active"<?php } ?>><i class="icon icon-home"></i> <?php _e('金鸡报晓功课'); ?></a></li>
 					  <?php if ($this->user_id) { ?>
-					<li><a href="lessons/list/" class="<?php if (!$_GET['lessons']  == 'lessons') { ?>active<?php } ?>"><i class="icon icon-list"></i> <?php _e('我的功课'); ?></a></li>
+					<li><a href="lessons/list/" class="<?php if ($_GET['app']  == 'lessons' && $_GET['act'] == 'list' ) { ?>active<?php } ?>"><i class="icon icon-list"></i> <?php _e('我的功课'); ?></a></li>
 					  <?php } ?>
 
 
