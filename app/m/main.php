@@ -1245,7 +1245,7 @@ class main extends AWS_CONTROLLER
 	public function index_action()
 	{
 		$this->crumb(AWS_APP::lang()->_t('24小时功课榜'), '/m/lessons/');
-		$lessons = $this->model('lessons')->lessonOf24Hours();
+		$lessons = $this->model('lessons')->index();
 		TPL::assign('lessons', $lessons);
 		TPL::output('m/24hours.tpl.htm');
 	}
